@@ -23,7 +23,7 @@ declare module 'vue' {
     LoginForm: typeof import('./src/components/organisms/loginForm.vue')['default']
     Navbar: typeof import('./src/components/organisms/navbar.vue')['default']
     Payment: typeof import('./src/components/Payment.vue')['default']
-    PaymentForm: typeof import('./src/components/PaymentForm.vue')['default']
+    PaymentForm: typeof import('./src/components/organisms/PaymentForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Schedule: typeof import('./src/components/dash_comp/Schedule.vue')['default']
