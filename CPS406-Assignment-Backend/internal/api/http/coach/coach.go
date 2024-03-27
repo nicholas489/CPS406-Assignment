@@ -122,11 +122,13 @@ func PostSignup(writer http.ResponseWriter, request *http.Request, db *gorm.DB) 
 
 func DeleteUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get the email from the url
+
 	id := chi.URLParam(request, "id")
 
 	// Get the user from the database
 	var user user.User
 	db.First(&user, "id = ?", id)
+
 
 	// Delete the user from the database
 	db.Delete(&user)
@@ -134,6 +136,7 @@ func DeleteUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) 
 	// Send the user as a response
 	json.NewEncoder(writer).Encode(user)
 }
+
 
 func GetCoach(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	var coach coach.Coach
@@ -153,3 +156,4 @@ func GetAllCoaches(writer http.ResponseWriter, request *http.Request, db *gorm.D
 	// Send the coaches as a response
 	json.NewEncoder(writer).Encode(coaches)
 }
+
