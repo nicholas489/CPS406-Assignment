@@ -81,7 +81,7 @@ function submitPayment() {
     return;
   }
 
-  toast.add({ severity: 'success', summary: 'Payment Success', detail: 'Payment processed successfully', life: 3000 });
+  toast.add({ severity: 'success', summary: 'Payment Successful', detail: 'Payment processed successfully', life: 3000 });
   // Implement payment processing logic here...
 }
 

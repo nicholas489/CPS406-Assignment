@@ -10,6 +10,7 @@ declare module 'vue' {
     Bookings: typeof import('./src/components/dash_comp/Bookings.vue')['default']
     Box4: typeof import('./src/components/dash_comp/Box4.vue')['default']
     BoxFour: typeof import('./src/components/dash_comp/BoxFour.vue')['default']
+    Button: typeof import('primevue/button')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
     DashboardView: typeof import('./src/components/organisms/DashboardView.vue')['default']
     Finances: typeof import('./src/components/dash_comp/Finances.vue')['default']
