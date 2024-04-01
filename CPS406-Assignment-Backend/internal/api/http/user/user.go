@@ -2,7 +2,6 @@ package user
 
 import (
 	"CPS406-Assignment-Backend/internal/util"
-	"CPS406-Assignment-Backend/pkg/event"
 	"CPS406-Assignment-Backend/pkg/jwtM"
 	"CPS406-Assignment-Backend/pkg/login"
 	"CPS406-Assignment-Backend/pkg/user"
@@ -119,7 +118,7 @@ func PostSignup(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 }
 
 func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
-	var ue event.UserEvent
+	var ue user.ReceiveEvent
 	if err := json.NewDecoder(r.Body).Decode(&ue); err != nil {
 		util.SendJSONError(w, err.Error()+"ee", http.StatusBadRequest)
 		return
@@ -132,7 +131,7 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		}
 	}()
 
-	var e event.Event
+	var e user.Event
 	if result := tx.Preload("Users").Where("name = ?", ue.EventName).First(&e); result.Error != nil {
 		tx.Rollback()
 		util.SendJSONError(w, "Event not found", http.StatusNotFound)

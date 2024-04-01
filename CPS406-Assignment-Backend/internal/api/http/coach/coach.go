@@ -3,7 +3,6 @@ package coach
 import (
 	"CPS406-Assignment-Backend/internal/util"
 	"CPS406-Assignment-Backend/pkg/coach"
-	"CPS406-Assignment-Backend/pkg/event"
 	"CPS406-Assignment-Backend/pkg/jwtM"
 	"CPS406-Assignment-Backend/pkg/user"
 	"encoding/json"
@@ -14,7 +13,7 @@ import (
 
 func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Parse the request body
-	var event, existingEvent event.Event
+	var event, existingEvent user.Event
 	err := json.NewDecoder(request.Body).Decode(&event)
 	if err != nil {
 		http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -41,7 +40,7 @@ func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	name := chi.URLParam(request, "name")
 
 	// Get the event from the database and save it in the event variable
-	var event event.Event
+	var event user.Event
 	db.First(&event, "Name = ?", name)
 
 	// Send the event as a response
@@ -50,7 +49,7 @@ func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 
 func GetEvents(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get all the events from the database
-	var events []event.Event
+	var events []user.Event
 	db.Find(&events)
 
 	// Send the events as a response
@@ -129,14 +128,12 @@ func DeleteUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) 
 	var user user.User
 	db.First(&user, "id = ?", id)
 
-
 	// Delete the user from the database
 	db.Delete(&user)
 
 	// Send the user as a response
 	json.NewEncoder(writer).Encode(user)
 }
-
 
 func GetCoach(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	var coach coach.Coach
@@ -156,4 +153,3 @@ func GetAllCoaches(writer http.ResponseWriter, request *http.Request, db *gorm.D
 	// Send the coaches as a response
 	json.NewEncoder(writer).Encode(coaches)
 }
-
