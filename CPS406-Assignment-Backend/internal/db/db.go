@@ -2,7 +2,6 @@ package db
 
 import (
 	"CPS406-Assignment-Backend/pkg/coach"
-	"CPS406-Assignment-Backend/pkg/event"
 	"CPS406-Assignment-Backend/pkg/user"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -21,6 +20,6 @@ func ConnectDB() *gorm.DB {
 // MigrateDB is a function that creates the tables in the database
 func MigrateDB(db *gorm.DB) {
 	print("Migrating the database \n")
-	db.AutoMigrate(&user.User{}, &coach.Coach{}, &event.Event{})
+	db.AutoMigrate(&user.User{}, &coach.Coach{}, &user.Event{})
 	print("Database migrated \n")
 }
