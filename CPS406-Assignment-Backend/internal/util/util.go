@@ -196,3 +196,42 @@ func CombinedJwtMiddleware(adminMiddleware, coachMiddleware func(http.Handler) h
 		})
 	}
 }
+
+func CheckCookie(w http.ResponseWriter, r *http.Request) {
+	// Get the token from the Cookie
+	cookie, err := r.Cookie("auth_token")
+	if err != nil {
+		SendJSONError(w, "No token provided", http.StatusUnauthorized)
+		return
+	}
+	// Check if the token is empty
+	if cookie.Value == "" {
+		SendJSONError(w, "No token provided", http.StatusUnauthorized)
+		return
+	}
+	// Parse the token
+	tokenString := cookie.Value
+	token, err := jwt.ParseWithClaims(tokenString, &jwtM.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("SECRET")), nil
+	})
+	// Check if the token is valid
+	if err != nil {
+		SendJSONError(w, "Invalid token", http.StatusUnauthorized)
+		return
+	}
+	if claims, ok := token.Claims.(*jwtM.CustomClaims); ok && token.Valid {
+		// Make a response struct to remove the issuer and expiration time
+		type Response struct {
+			Username   string          `json:"username"`
+			Privileges jwtM.Privileges `json:"privileges"`
+		}
+		// Send the claims as a response
+		var response Response
+		response.Username = claims.Username
+		response.Privileges = claims.Privileges
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+}
