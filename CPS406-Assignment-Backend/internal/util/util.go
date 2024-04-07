@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// SetTokenAsCookie sets the JWT token as a cookie
 func SetTokenAsCookie(w http.ResponseWriter, token string) {
 	// Create a cookie
 	http.SetCookie(w, &http.Cookie{
@@ -22,6 +23,7 @@ func SetTokenAsCookie(w http.ResponseWriter, token string) {
 	})
 }
 
+// GenerateJWT generates a JWT token
 func GenerateJWT(username string, privileges jwtM.Privileges) (string, error) {
 	// Create an instance of CustomClaims
 	claims := jwtM.CustomClaims{
@@ -47,11 +49,15 @@ func GenerateJWT(username string, privileges jwtM.Privileges) (string, error) {
 
 	return tokenString, nil
 }
+
+// SendJSONError sends a JSON error message
 func SendJSONError(w http.ResponseWriter, message string, statusCode int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
 	json.NewEncoder(w).Encode(map[string]string{"error": message})
 }
+
+// SetPrivileges sets the privileges for authentication
 func SetPrivileges(user jwtM.CustomClaims) jwtM.Privileges {
 	privileges := jwtM.Privileges{}
 	if user.Privileges.Admin {
@@ -65,6 +71,8 @@ func SetPrivileges(user jwtM.CustomClaims) jwtM.Privileges {
 	}
 	return privileges
 }
+
+// JwtMiddlewareUser is a middleware that checks if the user is authenticated
 func JwtMiddlewareUser(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get the token from the Cookie
@@ -105,6 +113,8 @@ func JwtMiddlewareUser(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+// JwtMiddlewareAdmin is a middleware that checks if the user is an admin
 func JwtMiddlewareAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get the token from the Authorization header
@@ -141,6 +151,8 @@ func JwtMiddlewareAdmin(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+// JwtMiddlewareCoach is a middleware that checks if the user is a coach
 func JwtMiddlewareCoach(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Get the token from the Authorization header
@@ -177,6 +189,8 @@ func JwtMiddlewareCoach(next http.Handler) http.Handler {
 		next.ServeHTTP(w, r)
 	})
 }
+
+// CombinedJwtMiddleware is a middleware that combines the admin and coach middleware
 func CombinedJwtMiddleware(adminMiddleware, coachMiddleware func(http.Handler) http.Handler) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -197,6 +211,7 @@ func CombinedJwtMiddleware(adminMiddleware, coachMiddleware func(http.Handler) h
 	}
 }
 
+// CheckCookie checks the cookie for the JWT token
 func CheckCookie(w http.ResponseWriter, r *http.Request) {
 	// Get the token from the Cookie
 	cookie, err := r.Cookie("auth_token")
@@ -236,8 +251,9 @@ func CheckCookie(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Logout logs out the user
 func Logout(w http.ResponseWriter) {
-	// Remove the cookie
+	// Remove the cookie by setting it to an empty value and an expiration time in the past
 	http.SetCookie(w, &http.Cookie{
 		Name:     "auth_token",
 		Value:    "",
@@ -247,5 +263,6 @@ func Logout(w http.ResponseWriter) {
 		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
 	})
+	// Send a 200 OK response
 	w.WriteHeader(http.StatusOK)
 }
