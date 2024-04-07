@@ -37,19 +37,6 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// send the user as a response
 	json.NewEncoder(w).Encode(user)
 }
-func GetEvents(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
-	w.Header().Set("Content-Type", "text/plain")
-	// get all the events from the database
-	// Get the id from the url
-	id := chi.URLParam(r, "id")
-	// Get the event list from user's list of events
-	var user2 user.User
-	db.First(&user2, "id = ?", id)
-	var events []user.Event // Corrected variable declaration for events slice
-	db.Model(&user2).Association("Events").Find(&events)
-	// send the events as a response list
-	json.NewEncoder(w).Encode(events)
-
 
 // GetEvents gets all the events from the database that the user is in
 func GetEvents(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -68,7 +55,6 @@ func GetEvents(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 }
 
 // PostLogin logs in the user
-
 
 func PostLogin(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// Parse the request body
@@ -236,7 +222,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}
 }
 
-
 // LeaveEvent removes a user from an event and adds the cost back to the user's balance
 func LeaveEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// Parse the request body
@@ -330,3 +315,4 @@ func LeaveEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	tx.Rollback()
 	util.SendJSONError(w, "User not in event", http.StatusNotFound)
 
+}
