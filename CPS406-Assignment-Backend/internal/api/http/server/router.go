@@ -12,6 +12,7 @@ import (
 func Server(r chi.Router, db *gorm.DB) {
 	// Routes for the API
 	// Route for the login
+
 	r.Route("/login", func(r chi.Router) {
 		r.Post("/user", func(writer http.ResponseWriter, request *http.Request) {
 			user.PostLogin(writer, request, db)
@@ -28,6 +29,12 @@ func Server(r chi.Router, db *gorm.DB) {
 		r.Post("/coach", func(writer http.ResponseWriter, request *http.Request) {
 			coach.PostSignup(writer, request, db)
 		})
+	})
+	r.Route("/logout", func(r chi.Router) {
+		r.Post("/", func(writer http.ResponseWriter, request *http.Request) {
+			util.Logout(writer, request)
+		})
+
 	})
 
 	// Route for the user

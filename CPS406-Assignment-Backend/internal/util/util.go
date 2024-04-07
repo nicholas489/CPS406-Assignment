@@ -235,3 +235,16 @@ func CheckCookie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func Logout(w http.ResponseWriter) {
+	// Remove the cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "auth_token",
+		Value:    "",
+		Path:     "/",
+		Expires:  time.Now().Add(-1 * time.Hour),
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	})
+}
