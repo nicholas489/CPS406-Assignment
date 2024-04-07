@@ -39,14 +39,13 @@ func Server(r chi.Router, db *gorm.DB) {
 		r.Get("/", func(writer http.ResponseWriter, request *http.Request) {
 			user.GetAllUsers(writer, request, db)
 
-
 		})
 		r.With(util.JwtMiddlewareCoach).Delete("/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			coach.DeleteUser(writer, request, db)
 		})
 	})
 	// Route for the coach
-	// TODO: Implement the coach routes
+
 	r.Route("/coach", func(r chi.Router) {
 		r.Use(util.CombinedJwtMiddleware(util.JwtMiddlewareCoach, util.JwtMiddlewareAdmin))
 		r.Get("/{id}", func(writer http.ResponseWriter, request *http.Request) {
@@ -57,7 +56,6 @@ func Server(r chi.Router, db *gorm.DB) {
 
 		})
 	})
-
 
 	// Route for the event
 	r.Route("/event", func(r chi.Router) {
@@ -75,6 +73,13 @@ func Server(r chi.Router, db *gorm.DB) {
 			user.JoinEvent(writer, request, db)
 		})
 
+	})
+
+	//Route for the auth
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/session", func(writer http.ResponseWriter, request *http.Request) {
+			util.CheckCookie(writer, request)
+		})
 	})
 
 	//r.Route("/coach", func(r chi.Router) {
