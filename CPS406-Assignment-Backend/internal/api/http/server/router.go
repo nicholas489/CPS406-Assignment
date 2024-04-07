@@ -50,7 +50,7 @@ func Server(r chi.Router, db *gorm.DB) {
 
 	})
 	// Route for the coach
-	// TODO: Implement the coach routes
+
 	r.Route("/coach", func(r chi.Router) {
 		r.Use(util.CombinedJwtMiddleware(util.JwtMiddlewareCoach, util.JwtMiddlewareAdmin))
 		r.Get("/{id}", func(writer http.ResponseWriter, request *http.Request) {
@@ -81,6 +81,13 @@ func Server(r chi.Router, db *gorm.DB) {
 			user.LeaveEvent(writer, request, db)
 		})
 
+	})
+
+	//Route for the auth
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/session", func(writer http.ResponseWriter, request *http.Request) {
+			util.CheckCookie(writer, request)
+		})
 	})
 
 	//r.Route("/coach", func(r chi.Router) {

@@ -87,6 +87,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		"message": "Login successful",
 		"email":   user.Email,
 		"name":    user.Name,
+		"id":      strconv.Itoa(int(user.ID)),
 	}
 	json.NewEncoder(w).Encode(response)
 }
@@ -127,6 +128,7 @@ func PostSignup(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		"message": "Signup successful",
 		"email":   u.Email,
 		"name":    u.Name,
+		"id":      strconv.Itoa(int(u.ID)),
 	}
 	json.NewEncoder(w).Encode(response)
 }
