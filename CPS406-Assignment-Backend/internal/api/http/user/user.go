@@ -35,7 +35,20 @@ func GetUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// send the user as a response
 	json.NewEncoder(w).Encode(user)
 }
+func GetEvents(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	w.Header().Set("Content-Type", "text/plain")
+	// get all the events from the database
+	// Get the id from the url
+	id := chi.URLParam(r, "id")
+	// Get the event list from user's list of events
+	var user2 user.User
+	db.First(&user2, "id = ?", id)
+	var events []user.Event // Corrected variable declaration for events slice
+	db.Model(&user2).Association("Events").Find(&events)
+	// send the events as a response list
+	json.NewEncoder(w).Encode(events)
 
+}
 func PostLogin(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// Parse the request body
 	var l login.Login
@@ -126,7 +139,6 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		util.SendJSONError(w, err.Error()+"ee", http.StatusBadRequest)
 		return
 	}
-
 	tx := db.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -135,7 +147,7 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	}()
 
 	var e user.Event
-	if result := tx.Preload("Users").Where("name = ?", ue.EventName).First(&e); result.Error != nil {
+	if result := tx.Preload("Users").Where("id = ?", ue.EventId).First(&e); result.Error != nil {
 		tx.Rollback()
 		util.SendJSONError(w, "Event not found", http.StatusNotFound)
 		return
@@ -169,6 +181,15 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		return
 	}
 
+	// Append the event to the user's Events slice
+	u.Events = append(u.Events, e)
+
+	if err := tx.Save(&u).Error; err != nil {
+		tx.Rollback()
+		util.SendJSONError(w, "Failed to add event to user's list", http.StatusInternalServerError)
+		return
+	}
+
 	if err := tx.Commit().Error; err != nil {
 		util.SendJSONError(w, "Transaction commit error", http.StatusInternalServerError)
 		return
@@ -185,6 +206,74 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		// Log the error of failing to encode or send the response
 		fmt.Println("Error sending response:", err)
 	}
+}
+
+func LeaveEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
+	var ue user.ReceiveEvent
+	if err := json.NewDecoder(r.Body).Decode(&ue); err != nil {
+		util.SendJSONError(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	var e user.Event
+	if result := tx.Preload("Users").Where("id = ?", ue.EventId).First(&e); result.Error != nil {
+		tx.Rollback()
+		util.SendJSONError(w, "Event not found", http.StatusNotFound)
+		return
+	}
+
+	var u user.User
+	if result := tx.Where("email = ?", ue.UserEmail).First(&u); result.Error != nil {
+		tx.Rollback()
+		util.SendJSONError(w, "User not found", http.StatusNotFound)
+		return
+	}
+	// Check if the user is in the event
+
+	for i, user := range e.Users {
+		if user.Email == u.Email {
+			e.Users = append(e.Users[:i], e.Users[i+1:]...)
+			if result := tx.Save(&e); result.Error != nil {
+				tx.Rollback()
+				util.SendJSONError(w, result.Error.Error(), http.StatusInternalServerError)
+				return
+			}
+			u.Balance += e.Cost
+			if result := tx.Save(&u); result.Error != nil {
+				tx.Rollback()
+				util.SendJSONError(w, result.Error.Error(), http.StatusInternalServerError)
+				return
+			}
+			// also remove the event from the user's list of events
+			if err := tx.Model(&u).Association("Events").Delete(&e); err != nil {
+				tx.Rollback()
+				util.SendJSONError(w, "Failed to remove event from user", http.StatusInternalServerError)
+				return
+			}
+			tx.Commit()
+			w.Header().Set("Content-Type", "application/json")
+			response := map[string]string{
+				"message": "User left event successfully",
+				"event":   e.Name,
+				"email":   u.Email,
+			}
+			if err := json.NewEncoder(w).Encode(response); err != nil {
+				// Log the error of failing to encode or send the response
+				fmt.Println("Error sending response:", err)
+			}
+			return
+		}
+	}
+
+	tx.Rollback()
+	util.SendJSONError(w, "User not in event", http.StatusNotFound)
 }
 
 //todo: implement

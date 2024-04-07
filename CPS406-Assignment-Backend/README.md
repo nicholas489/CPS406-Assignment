@@ -123,6 +123,7 @@ This data is meant for initial development and testing only and should not be us
 
 Below is the detailed table of the API routes, their descriptions, middleware, and the required JSON structure for requests (where applicable).
 
+
 | Method | Endpoint           | Description                              | Middleware                  | Required JSON Structure                                                              |
 |--------|--------------------|------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------|
 | POST   | `api/login/user`   | Logs in a user                           | None                        | `{ "email": "user@example.com", "password": "password123" }`                         |
@@ -133,10 +134,11 @@ Below is the detailed table of the API routes, their descriptions, middleware, a
 | GET    | `api/user/`        | Retrieves all users                      | `JwtMiddlewareUser`         | N/A                                                                                  |
 | POST   | `api/event/join`   | Allows a user to join an event           | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                   |
 | POST   | `api/event/`       | Allows a coach to create an event        | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10 }`                           |
-| GET    | `api/event/{name}` | Retrieves a specific event by name       | None                        | N/A                                                                                  |
+| GET    | `api/event/{id}` | Retrieves a specific event by name       | None                        | N/A                                                                                  |
 | GET    | `api/event/`       | Retrieves all events                     | None                        | N/A                                                                                  |
 | DELETE | `api/user/{id}`    | Deletes the user of the corresponding id | None                        | N/A                                                                                  |
 | POST   | `api/auth/session` | Returns contents of cookie               | None                        | N/A                                                                                  |
+
 
 ## Notes
 

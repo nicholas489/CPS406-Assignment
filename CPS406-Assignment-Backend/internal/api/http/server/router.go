@@ -35,6 +35,10 @@ func Server(r chi.Router, db *gorm.DB) {
 		r.Use(util.JwtMiddlewareUser)
 		r.Get("/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			user.GetUser(writer, request, db)
+
+		})
+		r.Get("/{id}/events", func(writer http.ResponseWriter, request *http.Request) {
+			user.GetEvents(writer, request, db)
 		})
 		r.Get("/", func(writer http.ResponseWriter, request *http.Request) {
 			user.GetAllUsers(writer, request, db)
@@ -43,6 +47,7 @@ func Server(r chi.Router, db *gorm.DB) {
 		r.With(util.JwtMiddlewareCoach).Delete("/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			coach.DeleteUser(writer, request, db)
 		})
+
 	})
 	// Route for the coach
 
@@ -66,11 +71,14 @@ func Server(r chi.Router, db *gorm.DB) {
 			coach.PostEvent(writer, request, db)
 		})
 
-		r.Get("/{name}", func(writer http.ResponseWriter, request *http.Request) {
+		r.Get("/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			coach.GetEvent(writer, request, db)
 		})
 		r.With(util.JwtMiddlewareUser).Post("/join", func(writer http.ResponseWriter, request *http.Request) {
 			user.JoinEvent(writer, request, db)
+		})
+		r.With(util.JwtMiddlewareUser).Delete("/leave", func(writer http.ResponseWriter, request *http.Request) {
+			user.LeaveEvent(writer, request, db)
 		})
 
 	})
