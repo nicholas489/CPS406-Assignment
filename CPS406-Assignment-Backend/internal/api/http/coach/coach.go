@@ -39,6 +39,7 @@ func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get the id from the url
 	id := chi.URLParam(request, "id")
+
 	// Get the event from the database and save it in the event variable
 	var event user.Event
 	db.First(&event, "id = ?", id)
@@ -49,6 +50,7 @@ func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 		util.SendJSONError(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	// Send the event as a response
 	json.NewEncoder(writer).Encode(event)
 }
