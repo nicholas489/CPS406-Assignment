@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 )
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
@@ -73,6 +74,7 @@ func PostLogin(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		"message": "Login successful",
 		"email":   user.Email,
 		"name":    user.Name,
+		"id":      strconv.Itoa(int(user.ID)),
 	}
 	json.NewEncoder(w).Encode(response)
 }
@@ -113,6 +115,7 @@ func PostSignup(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		"message": "Signup successful",
 		"email":   u.Email,
 		"name":    u.Name,
+		"id":      strconv.Itoa(int(u.ID)),
 	}
 	json.NewEncoder(w).Encode(response)
 }
@@ -176,6 +179,7 @@ func JoinEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 		"message": "User joined event successfully",
 		"event":   e.Name,
 		"email":   u.Email,
+		"id":      strconv.Itoa(int(u.ID)),
 	}
 	if err := json.NewEncoder(w).Encode(response); err != nil {
 		// Log the error of failing to encode or send the response
