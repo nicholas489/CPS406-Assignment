@@ -247,4 +247,5 @@ func Logout(w http.ResponseWriter) {
 		Secure:   true,
 		SameSite: http.SameSiteStrictMode,
 	})
+	w.WriteHeader(http.StatusOK)
 }

@@ -32,7 +32,7 @@ func Server(r chi.Router, db *gorm.DB) {
 	})
 	r.Route("/logout", func(r chi.Router) {
 		r.Post("/", func(writer http.ResponseWriter, request *http.Request) {
-			util.Logout(writer, request)
+			util.Logout(writer)
 		})
 
 	})
