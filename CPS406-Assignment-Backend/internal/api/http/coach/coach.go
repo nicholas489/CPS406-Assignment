@@ -11,6 +11,7 @@ import (
 	"net/http"
 )
 
+// PostEvent creates an event in the database
 func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Parse the request body
 	var event, existingEvent user.Event
@@ -25,16 +26,16 @@ func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 		util.SendJSONError(writer, "Event already exists", http.StatusConflict)
 		return
 	}
-	// make event and putting an empty user list
+	// Make event and putting an empty user list
 	event.Users = []user.User{}
 	// Create the event in the database
 	db.Create(&event)
 	// Send the event as a response and set the status code to 201 (Created)
 	writer.WriteHeader(http.StatusCreated)
 	json.NewEncoder(writer).Encode(event)
-
 }
 
+// GetEvent gets an event from the database
 func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get the id from the url
 	id := chi.URLParam(request, "id")
@@ -49,21 +50,21 @@ func GetEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 		util.SendJSONError(writer, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Add the users to the event
 
 	// Send the event as a response
 	json.NewEncoder(writer).Encode(event)
 }
 
+// GetEvents gets all the events from the database
 func GetEvents(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get all the events from the database
 	var events []user.Event
 	db.Find(&events)
-
 	// Send the events as a response
 	json.NewEncoder(writer).Encode(events)
 }
 
+// PostLogin logs in a coach
 func PostLogin(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Parse the request body
 	var login coach.Coach
@@ -98,6 +99,7 @@ func PostLogin(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	json.NewEncoder(writer).Encode(coach)
 }
 
+// PostSignup signs up a coach
 func PostSignup(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Parse the request body
 	var coach coach.Coach
@@ -127,6 +129,7 @@ func PostSignup(writer http.ResponseWriter, request *http.Request, db *gorm.DB) 
 	json.NewEncoder(writer).Encode(coach)
 }
 
+// DeleteUser deletes a user from the database
 func DeleteUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get the email from the url
 
@@ -143,6 +146,7 @@ func DeleteUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) 
 	json.NewEncoder(writer).Encode(user)
 }
 
+// GetCoach gets a coach from the database by id
 func GetCoach(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	var coach coach.Coach
 	// Get the id from the url
@@ -153,6 +157,7 @@ func GetCoach(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	json.NewEncoder(writer).Encode(coach)
 }
 
+// GetAllCoaches gets all the coaches from the database
 func GetAllCoaches(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get all the coaches from the database
 	var coaches []coach.Coach

@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// main is the entry point of the application
 func main() {
 	// Connect to the database
 	dataBase := db.ConnectDB()
@@ -39,7 +40,10 @@ func main() {
 	r.Route("/api", func(r chi.Router) {
 		r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "text/plain")
-			w.Write([]byte("The server is running!"))
+			_, err := w.Write([]byte("The server is running!"))
+			if err != nil {
+				return
+			}
 		})
 		server.Server(r, dataBase)
 	})
@@ -48,9 +52,13 @@ func main() {
 	serveVueApp(r, dist)
 	// Listen for requests on port in your .env file
 	portNum := ":" + os.Getenv("PORT")
-	http.ListenAndServe(portNum, r)
+	err = http.ListenAndServe(portNum, r)
+	if err != nil {
+		return
+	}
 }
 
+// serveVueApp serves the Vue app
 func serveVueApp(r *chi.Mux, fsRoot string) {
 	// Find the absolute path of the Vue app
 	absPath, err := filepath.Abs(fsRoot)
