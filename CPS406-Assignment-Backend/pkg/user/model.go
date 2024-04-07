@@ -24,6 +24,6 @@ type Event struct {
 }
 
 type ReceiveEvent struct {
-	EventName string `json:"event_name"`
+	EventId   string `json:"event_id"`
 	UserEmail string `json:"user_email"`
 }

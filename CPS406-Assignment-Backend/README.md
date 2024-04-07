@@ -131,9 +131,9 @@ Below is the detailed table of the API routes, their descriptions, middleware, a
 | POST   | `api/signup/coach` | Signs up a new coach                  | None                        | `{ "name": "Jane Doe", "email": "newcoach@example.com", "password": "password123" }` |
 | GET    | `api/user/{id}`    | Retrieves a specific user by ID       | `JwtMiddlewareUser`         | N/A                                                                                  |
 | GET    | `api/user/`        | Retrieves all users                   | `JwtMiddlewareUser`         | N/A                                                                                  |
-| POST   | `api/event/join`   | Allows a user to join an event        | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                   |
+| POST   | `api/event/join`   | Allows a user to join an event        | `JwtMiddlewareUser`         | `{ "event_id": "0", "user_email": "user@example.com" }`                              |
 | POST   | `api/event/`       | Allows a coach to create an event     | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10 }`                           |
-| GET    | `api/event/{name}` | Retrieves a specific event by name    | None                        | N/A                                                                                  |
+| GET    | `api/event/{id}`   | Retrieves a specific event by name    | None                        | N/A                                                                                  |
 | GET    | `api/event/`       | Retrieves all events                  | None                        | N/A                                                                                  |
 
 ## Notes
