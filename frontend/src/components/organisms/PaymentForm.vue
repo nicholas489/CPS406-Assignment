@@ -10,6 +10,7 @@
 
       <!-- Payment amount section -->
       <div class="payment-amount">
+
     <label for="amount" class="block text-sm font-medium text-gray-700">Payment amount</label>
     <div class="mt-1 relative rounded-md shadow-sm">
       <!-- We bind the value to paymentAmount and also display it in the placeholder -->
@@ -89,11 +90,17 @@ function submitPayment() {
 
   toast.add({ severity: 'success', summary: 'Payment Successful', detail: 'Payment processed successfully', life: 3000 });
 
+
 }
 
 onMounted(() => {
   // Fetch the query parameter and assign it to paymentAmount
   paymentAmount.value = (route.query.amount || '').toString();
 });
+
+
+  //TODO: Implement payment processing logic here...
+
+
 
 </script>

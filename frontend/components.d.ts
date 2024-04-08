@@ -9,9 +9,13 @@ declare module 'vue' {
   export interface GlobalComponents {
     AmountDue: typeof import('./src/components/organisms/amountDue.vue')['default']
     Bookings: typeof import('./src/components/dash_comp/Bookings.vue')['default']
+    Box4: typeof import('./src/components/dash_comp/Box4.vue')['default']
     BoxFour: typeof import('./src/components/dash_comp/BoxFour.vue')['default']
+    Button: typeof import('primevue/button')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
+    DashboardView: typeof import('./src/components/organisms/DashboardView.vue')['default']
     Finances: typeof import('./src/components/dash_comp/Finances.vue')['default']
+    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
@@ -19,6 +23,7 @@ declare module 'vue' {
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     LoginForm: typeof import('./src/components/organisms/loginForm.vue')['default']
     Navbar: typeof import('./src/components/organisms/navbar.vue')['default']
+    Payment: typeof import('./src/components/Payment.vue')['default']
     PaymentForm: typeof import('./src/components/organisms/PaymentForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -27,3 +32,4 @@ declare module 'vue' {
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }
+
