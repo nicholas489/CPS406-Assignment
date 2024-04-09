@@ -3,6 +3,7 @@ package finance
 import (
 	"CPS406-Assignment-Backend/internal/util"
 	"CPS406-Assignment-Backend/pkg/finance"
+	"CPS406-Assignment-Backend/pkg/user"
 	"encoding/json"
 	"github.com/go-chi/chi/v5"
 	"gorm.io/gorm"
@@ -84,4 +85,33 @@ func GetMonthlyAccount(writer http.ResponseWriter, request *http.Request, db *go
 		return
 	}
 
+}
+
+// PayBalanceUser updates the balance of the user
+func PayBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
+	// Get the user ID from the URL parameters
+	id := chi.URLParam(request, "id")
+	// Get the user from the database
+	var user2 user.User
+	if err := db.First(&user2, id).Error; err != nil {
+		util.SendJSONError(writer, "No such user!", http.StatusNotFound)
+		return
+	}
+	// Decode the request body into a balance struct
+	var balance user.UserBalance
+	if err := json.NewDecoder(request.Body).Decode(&balance); err != nil {
+		util.SendJSONError(writer, "Failed to decode balance", http.StatusBadRequest)
+		return
+	}
+	// Update the user's balance
+	user2.Balance -= balance.Amount
+	if err := db.Save(&user2).Error; err != nil {
+		util.SendJSONError(writer, "Failed to update balance", http.StatusInternalServerError)
+		return
+	}
+	// Respond with the updated user
+	writer.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(writer).Encode(user2); err != nil {
+		return
+	}
 }

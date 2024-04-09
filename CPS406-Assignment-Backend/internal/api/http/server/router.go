@@ -66,6 +66,10 @@ func Server(r chi.Router, db *gorm.DB) {
 			coach.DeleteUser(writer, request, db)
 		})
 
+		r.Put("/{id}/pay", func(writer http.ResponseWriter, request *http.Request) {
+			finance.PayBalanceUser(writer, request, db)
+		})
+
 	})
 	// Route for the coach
 	r.Route("/coach", func(r chi.Router) {
