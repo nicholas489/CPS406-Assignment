@@ -124,25 +124,25 @@ This data is meant for initial development and testing only and should not be us
 Below is the detailed table of the API routes, their descriptions, middleware, and the required JSON structure for requests (where applicable).
 
 
-| Method | Endpoint         | Description                              | Middleware                  | Required JSON Structure                                                              |
-|--------|------------------|------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------|
-| POST   | `api/login/user` | Logs in a user                           | None                        | `{ "email": "user@example.com", "password": "password123" }`                         |
-| POST   | `api/login/coach` | Logs in a coach                          | None                        | `{ "email": "coach@example.com", "password": "password123" }`                        |
-| POST   | `api/signup/user` | Signs up a new user                      | None                        | `{ "name": "John Doe", "email": "newuser@example.com", "password": "password123" }`  |
-| POST   | `api/signup/coach` | Signs up a new coach                     | None                        | `{ "name": "Jane Doe", "email": "newcoach@example.com", "password": "password123" }` |
-| GET    | `api/user/{id}`  | Retrieves a specific user by ID          | `JwtMiddlewareUser`         | N/A                                                                                  |
-| GET    | `api/user/`      | Retrieves all users                      | `JwtMiddlewareUser`         | N/A                                                                                  |
-| POST   | `api/event/join` | Allows a user to join an event           | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                   |
-| POST   | `api/event/`     | Allows a coach to create an event        | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10 }`                           |
-| GET    | `api/event/{id}` | Retrieves a specific event by name       | None                        | N/A                                                                                  |
-| GET    | `api/event/`     | Retrieves all events                     | None                        | N/A                                                                                  |
-| DELETE | `api/user/{id}`  | Deletes the user of the corresponding id | None                        | N/A                                                                                  |
-| POST   | `api/auth/session` | Returns contents of cookie               | None                        | N/A                                                                                  |
-| POST   | `api/auth/logout` | Logs out the user                        | None                        | N/A                                                                                  |
-| Get | `api/finance` | Retrieves all of the yearly financial data | `JwtMiddlewareCoach` | N/A | 
-| Get | `api/finance/{year}` | Retrieves all of the financial data for a specific year | `JwtMiddlewareCoach` | N/A |
-| Get | `api/finance/{year}/{month}` | Retrieves all of the financial data for a specific month in a specific year | `JwtMiddlewareCoach` | N/A |
-
+| Method | Endpoint         | Description                                                                 | Middleware                  | Required JSON Structure                                                              |
+|--------|------------------|-----------------------------------------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------|
+| POST   | `api/login/user` | Logs in a user                                                              | None                        | `{ "email": "user@example.com", "password": "password123" }`                         |
+| POST   | `api/login/coach` | Logs in a coach                                                             | None                        | `{ "email": "coach@example.com", "password": "password123" }`                        |
+| POST   | `api/signup/user` | Signs up a new user                                                         | None                        | `{ "name": "John Doe", "email": "newuser@example.com", "password": "password123" }`  |
+| POST   | `api/signup/coach` | Signs up a new coach                                                        | None                        | `{ "name": "Jane Doe", "email": "newcoach@example.com", "password": "password123" }` |
+| GET    | `api/user/{id}`  | Retrieves a specific user by ID                                             | `JwtMiddlewareUser`         | N/A                                                                                  |
+| GET    | `api/user/`      | Retrieves all users                                                         | `JwtMiddlewareUser`         | N/A                                                                                  |
+| POST   | `api/event/join` | Allows a user to join an event                                              | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                   |
+| POST   | `api/event/`     | Allows a coach to create an event                                           | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10 }`                           |
+| GET    | `api/event/{id}` | Retrieves a specific event by name                                          | None                        | N/A                                                                                  |
+| GET    | `api/event/`     | Retrieves all events                                                        | None                        | N/A                                                                                  |
+| DELETE | `api/user/{id}`  | Deletes the user of the corresponding id                                    | None                        | N/A                                                                                  |
+| POST   | `api/auth/session` | Returns contents of cookie                                                  | None                        | N/A                                                                                  |
+| POST   | `api/auth/logout` | Logs out the user                                                           | None                        | N/A                                                                                  |
+| Get | `api/finance` | Retrieves all of the yearly financial data                                  | `JwtMiddlewareCoach` | N/A                                                                                  | 
+| Get | `api/finance/{year}` | Retrieves all of the financial data for a specific year                     | `JwtMiddlewareCoach` | N/A                                                                                  |
+| Get | `api/finance/{year}/{month}` | Retrieves all of the financial data for a specific month in a specific year | `JwtMiddlewareCoach` | N/A                                                                                  |
+| PUT | `api/user/{id}/pay` | Allows a user to pay                                                        | `JwtMiddlewareUser` | `{ "amount": int, "email": "example@example.com", "in_advance_payment": bool }`        |
 ## Notes
 
 - The `/{id}`, `/{year}` and `/{month}` in the endpoints are placeholders for dynamic values specific to each request.
