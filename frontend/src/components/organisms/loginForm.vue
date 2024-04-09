@@ -3,8 +3,6 @@ import InputText from 'primevue/inputtext';
 import FloatLabel from 'primevue/floatlabel';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
-
-
 import {ref} from 'vue';
 import {useToast} from "primevue/usetoast";
 import {useAuthStore} from "@/stores/authStore";
@@ -16,6 +14,12 @@ const username = ref('');
 const password = ref('');
 const coach = ref();
 const submitForm = async () => {
+    // Sheel's stuff to bypass (i will remove it when i'm done with dashboards (pls don't remove it just keep it commented out)
+    // if (coach.value){
+    //     router.push({name: 'dashboard-coach'});
+    // } else {
+    //     router.push({ name: 'dashboard-user' });
+    // };
     if (!username.value || !password.value) {
         toast.add({severity: 'error', summary: 'Login', detail: 'Please fill in all fields', life: 3000});
         return;
