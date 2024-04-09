@@ -5,20 +5,19 @@
       <label for="amount" class="block">Enter amount to pay:</label>
       <input type="text" id="amount" v-model="paymentAmount" @input="validateAmount" class="w-32 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Amount" />
     </div>
-    <Button label="Proceed to Payment" @click="submitPayment" />
+    <Button  class='payment-button' label="Proceed to Payment" @click="submitPayment" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 
 const toast = useToast();
-const totalAmountDue = 1000; // TODO: Backend need to change this value here
-const paymentAmount = ref('');
 const router = useRouter();
+const totalAmountDue = 1000; // Placeholder value
+const paymentAmount = ref('');
 
 watch(paymentAmount, (newValue, oldValue) => {
   if (newValue !== '' && isNaN(Number(newValue))) {
@@ -38,9 +37,19 @@ function validateAmount(event: any) {
 }
 
 function submitPayment() {
-  if (paymentAmount.value !== '' && !isNaN(Number(paymentAmount.value))) {
+  // Check if the payment amount is empty
+  if (paymentAmount.value == '') {
+    toast.add({
+      severity: 'warn', // Using 'warn' severity for an empty field warning
+      summary: 'Amount Required',
+      detail: 'Please enter an amount to proceed with the payment',
+      life: 3000
+    });
+  } else if (!isNaN(Number(paymentAmount.value))) {
+    // Proceed with the payment if the amount is a valid number
     router.push({ name: 'payment', query: { amount: paymentAmount.value } });
   } else {
+    // Display an error if the entered amount is not a valid number
     toast.add({
       severity: 'error',
       summary: 'Invalid Amount',
@@ -52,5 +61,5 @@ function submitPayment() {
 </script>
 
 <style scoped>
-
+/* Add more styles as needed */
 </style>

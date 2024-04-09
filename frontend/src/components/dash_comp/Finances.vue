@@ -8,16 +8,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import Button from 'primevue/button';
-
 import PaymentForm from '../organisms/amountDue.vue';
 
-const router = useRouter();
-
-function goToPayment() {
-  // The name 'payment' should match the name given to the route in your router configuration
-  router.push({ name: 'payment' });
-}
 </script>
 
 <style scoped>
