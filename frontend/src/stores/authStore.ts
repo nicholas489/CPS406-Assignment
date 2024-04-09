@@ -54,6 +54,7 @@ export const useAuthStore = defineStore('auth', {
                 this.isAuthenticated = false;
                 this.username = '';
                 this.baid = 0;
+                this.isCoach = false;
             } else {
                 console.error('Failed to logout:', response.status);
             }

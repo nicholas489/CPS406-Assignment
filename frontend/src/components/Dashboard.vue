@@ -5,13 +5,15 @@ import Booking from './dash_comp/Bookings.vue'
 import Finance from './dash_comp/Finances.vue'
 import BoxFour from './dash_comp/BoxFour.vue'
 import Button from 'primevue/button'
-import router from "@/router";
+import {useRouter} from "vue-router";
+import {useAuthStore} from "@/stores/authStore";
 
+const authStore = useAuthStore();
+const router = useRouter()
 
   const logout = () => {
-  localStorage.removeItem('username');
-  localStorage.removeItem('password');
-  router.push('/login');
+  authStore.logout();
+  router.push('login');
 };
 
 
