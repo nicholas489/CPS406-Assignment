@@ -1,14 +1,16 @@
 <template>
   <div class="box">
-    <p>This is Finance</p>
+    <PaymentForm />
     <!-- Using PrimeVue Button component -->
-    <Button label="Go to Payment" @click="goToPayment" />
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 import Button from 'primevue/button';
+
+import PaymentForm from '../organisms/amountDue.vue';
 
 const router = useRouter();
 

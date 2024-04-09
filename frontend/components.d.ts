@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AmountDue: typeof import('./src/components/organisms/amountDue.vue')['default']
     Bookings: typeof import('./src/components/dash_comp/Bookings.vue')['default']
     Box4: typeof import('./src/components/dash_comp/Box4.vue')['default']
     BoxFour: typeof import('./src/components/dash_comp/BoxFour.vue')['default']
@@ -31,3 +32,4 @@ declare module 'vue' {
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }
+

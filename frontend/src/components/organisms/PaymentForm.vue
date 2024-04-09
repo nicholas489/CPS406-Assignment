@@ -10,11 +10,13 @@
 
       <!-- Payment amount section -->
       <div class="payment-amount">
-        <label for="amount" class="block text-sm font-medium text-gray-700">Payment amount</label>
-        <div class="mt-1 relative rounded-md shadow-sm">
-          <input type="text" id="amount" class="form-input block w-full sm:text-sm border-gray-300 rounded-md p-2" placeholder="Canadian Dollars" readonly />
-        </div>
-      </div>
+
+    <label for="amount" class="block text-sm font-medium text-gray-700">Payment amount</label>
+    <div class="mt-1 relative rounded-md shadow-sm">
+      <!-- We bind the value to paymentAmount and also display it in the placeholder -->
+      <input type="text" id="amount" :value="`$${paymentAmount}`" class="form-input block w-full sm:text-sm border-gray-300 rounded-md p-2" readonly />
+    </div>
+  </div>
 
       <!-- Name on card section -->
       <div class="input-group">
@@ -55,7 +57,8 @@
 
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 import Toast from 'primevue/toast';
 import { useToast } from "primevue/usetoast";
@@ -67,6 +70,9 @@ const cardNumber = ref('');
 const expiry = ref('');
 const securityCode = ref('');
 const postalCode = ref('');
+const paymentAmount = ref('');
+const router = useRouter();
+const route = useRoute();
 
 function submitPayment() {
   let errorMessage = '';
@@ -83,7 +89,18 @@ function submitPayment() {
   }
 
   toast.add({ severity: 'success', summary: 'Payment Successful', detail: 'Payment processed successfully', life: 3000 });
-  //TODO: Implement payment processing logic here...
+
+
 }
+
+onMounted(() => {
+  // Fetch the query parameter and assign it to paymentAmount
+  paymentAmount.value = (route.query.amount || '').toString();
+});
+
+
+  //TODO: Implement payment processing logic here...
+
+
 
 </script>
