@@ -14,17 +14,21 @@ const toast = useToast();
 
 const username = ref('');
 const password = ref('');
+const coach = ref();
 const submitForm = async () => {
-    await router.push({ name: 'dashboard' });   // TODO: IMPORTANT remove after review (by-pass for the login page)
     if (!username.value || !password.value) {
         toast.add({severity: 'error', summary: 'Login', detail: 'Please fill in all fields', life: 3000});
         return;
     }
     const authStore = useAuthStore();
-    const loginResult = await authStore.login({username: username.value, password: password.value});
+    const loginResult = await authStore.login({email: username.value, password: password.value}, coach.value);
     if (loginResult[0]) {
         toast.add({severity: 'success', summary: 'Login', detail: 'Successfully Logged in', life: 3000});
-        await router.push({ name: 'dashboard' });
+        if (authStore.isCoach) {
+            await router.push({name: 'dashboard-coach'});
+        } else {
+            await router.push({name: 'dashboard-user'});
+        }
     } else {
         toast.add({severity: 'error', summary: 'Login', detail: loginResult[1], life: 3000});
     }
@@ -37,12 +41,13 @@ const submitForm = async () => {
         <form class="flex flex-col space-y-8 mt-6 w-full" @submit.prevent="submitForm">
             <FloatLabel>
                 <InputText id="username" v-model="username"/>
-                <label for="username">Username</label>
+                <label for="username">Email</label>
             </FloatLabel>
             <FloatLabel>
                 <InputText id="password" v-model="password" type="password"/>
                 <label for="password">Password</label>
             </FloatLabel>
+            <input type="checkbox" v-model="coach"/> Coach?
             <Button label="Submit" type="submit"/>
         </form>
     </div>

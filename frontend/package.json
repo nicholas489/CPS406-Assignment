@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "run": "npm run build; cd ../CPS406-Assignment-Backend/; go run cmd/app/main.go; cd ../frontend/",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

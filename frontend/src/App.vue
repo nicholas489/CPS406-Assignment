@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
 import Navbar from "@/components/organisms/navbar.vue";
+import {onMounted} from "vue";
+import {useAuthStore} from "@/stores/authStore";
+onMounted(() => {
+    let authStore = useAuthStore();
+    authStore.initAuth();
+});
 </script>
 
 <template>
