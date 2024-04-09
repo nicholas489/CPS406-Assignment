@@ -2,9 +2,11 @@ package db
 
 import (
 	"CPS406-Assignment-Backend/pkg/coach"
+	"CPS406-Assignment-Backend/pkg/finance"
 	"CPS406-Assignment-Backend/pkg/user"
 	"gorm.io/gorm"
 	"log"
+	"math/rand"
 )
 
 func SeedDatabase(db *gorm.DB) {
@@ -42,6 +44,11 @@ func SeedDatabase(db *gorm.DB) {
 	if err := enrollUsersInEvents(tx); err != nil {
 		tx.Rollback()
 		log.Fatalf("Failed to enroll users in events: %v", err)
+	}
+	// Populate finance
+	if err := populateFinance(tx); err != nil {
+		tx.Rollback()
+		log.Fatalf("Failed to populate finance: %v", err)
 	}
 
 	// Commit transaction
@@ -137,4 +144,54 @@ func enrollUsersInEvents(tx *gorm.DB) error {
 		}
 	}
 	return nil
+}
+
+func randomFloat64(min, max float64) float64 {
+	return min + rand.Float64()*(max-min)
+}
+
+// populateFinance populates the database with an OrganizationAccount, associated YearlyAccounts, and MonthlyAccounts
+func populateFinance(tx *gorm.DB) error {
+	orgAccount := finance.OrganizationAccount{Name: "dance_club"}
+	if err := tx.Create(&orgAccount).Error; err != nil {
+		return err // Return error if creation fails
+	}
+
+	// Seed yearly accounts from 2014 to 2024
+	for year := 2014; year <= 2024; year++ {
+		yearlyAccount := finance.YearlyAccount{
+			Year:           year,
+			Profit:         0, // Will be calculated
+			Expenses:       0, // Will be calculated
+			OrganizationID: orgAccount.ID,
+		}
+
+		// Generate data for each month
+		for month := 1; month <= 12; month++ {
+			monthlyProfit := randomFloat64(500, 5000)   // Random profit
+			monthlyExpenses := randomFloat64(300, 4000) // Random expenses
+
+			// Create and append monthly accounts
+			monthlyAccount := finance.MonthlyAccount{
+				Year:            year,
+				Month:           month,
+				Profit:          monthlyProfit,
+				Expenses:        monthlyExpenses,
+				YearlyAccountID: yearlyAccount.ID,
+			}
+
+			yearlyAccount.MonthlyAccounts = append(yearlyAccount.MonthlyAccounts, monthlyAccount)
+
+			// Update yearly profit and expenses
+			yearlyAccount.Profit += monthlyProfit
+			yearlyAccount.Expenses += monthlyExpenses
+		}
+
+		// Save the yearly account along with its monthly accounts
+		if err := tx.Create(&yearlyAccount).Error; err != nil {
+			return err // Return error if creation fails
+		}
+	}
+
+	return nil // Return nil if successful
 }
