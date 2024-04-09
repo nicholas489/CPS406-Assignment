@@ -103,6 +103,10 @@ func PayBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.
 		util.SendJSONError(writer, "Failed to decode balance", http.StatusBadRequest)
 		return
 	}
+	// Check if the user has paid in advance
+	if balance.InAdvancePayment {
+		user2.InAdvancePaymentCounter++
+	}
 	// Update the user's balance
 	user2.Balance -= balance.Amount
 	if err := db.Save(&user2).Error; err != nil {
