@@ -30,5 +30,5 @@ type ReceiveEvent struct {
 
 type UserBalance struct {
 	UserEmail string `json:"email"`
-	Balance   int    `json:"balance"`
+	Amount    int    `json:"Amount"`
 }

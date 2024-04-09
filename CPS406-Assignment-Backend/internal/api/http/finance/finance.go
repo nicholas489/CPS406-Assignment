@@ -87,8 +87,8 @@ func GetMonthlyAccount(writer http.ResponseWriter, request *http.Request, db *go
 
 }
 
-// UpdateBalanceUser updates the balance of the user
-func UpdateBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
+// PayBalanceUser updates the balance of the user
+func PayBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	// Get the user ID from the URL parameters
 	id := chi.URLParam(request, "id")
 	// Get the user from the database
@@ -104,7 +104,7 @@ func UpdateBalanceUser(writer http.ResponseWriter, request *http.Request, db *go
 		return
 	}
 	// Update the user's balance
-	user2.Balance -= balance.Balance
+	user2.Balance -= balance.Amount
 	if err := db.Save(&user2).Error; err != nil {
 		util.SendJSONError(writer, "Failed to update balance", http.StatusInternalServerError)
 		return
