@@ -25,10 +25,10 @@ type Event struct {
 
 type ReceiveEvent struct {
 	EventId   string `json:"event_id"`
-	UserEmail string `json:"user_email"`
+	UserEmail string `json:"email"`
 }
 
 type UserBalance struct {
-	UserEmail string `json:"user_email"`
+	UserEmail string `json:"email"`
 	Balance   int    `json:"balance"`
 }
