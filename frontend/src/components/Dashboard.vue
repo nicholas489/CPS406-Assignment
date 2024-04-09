@@ -1,19 +1,17 @@
 <!-- Dashboard.vue -->
 <script setup lang="ts">
-import Schedule from './dash_comp/Schedule.vue'
+import Schedule from './dash_comp/UpcomingSession.vue'
 import Booking from './dash_comp/Bookings.vue'
 import Finance from './dash_comp/Finances.vue'
-import BoxFour from './dash_comp/BoxFour.vue'
+import BoxFour from './dash_comp/ClubStats.vue'
 import Button from 'primevue/button'
-import {useRouter} from "vue-router";
-import {useAuthStore} from "@/stores/authStore";
+import router from "@/router";
 
-const authStore = useAuthStore();
-const router = useRouter()
 
   const logout = () => {
-  authStore.logout();
-  router.push('login');
+  localStorage.removeItem('username');
+  localStorage.removeItem('password');
+  router.push('/login');
 };
 
 
@@ -74,4 +72,4 @@ h2 {
 }
 
 /* Additional styling as needed */
-</style>
+</style>./dash_comp/ClubStats.vue
