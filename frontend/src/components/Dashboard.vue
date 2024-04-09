@@ -7,7 +7,6 @@ import BoxFour from './dash_comp/ClubStats.vue'
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
-import { router as appRouter } from "@/router";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -76,4 +75,4 @@ h2 {
 }
 
 /* Additional styling as needed */
-</style>./dash_comp/ClubStats.vue
+</style>
