@@ -1,7 +1,7 @@
 <template>
     <div class="box">
       <!-- Box content goes here -->
-      <p>This is Box Four</p>
+      <p>This is Inovice</p>
     </div>
   </template>
   
@@ -10,7 +10,7 @@
   </script>
   
   <style scoped>
-   .box {
+    .box {
   display: flex;
   align-items: center;
   justify-content: center;

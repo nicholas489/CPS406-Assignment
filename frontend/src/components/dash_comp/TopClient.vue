@@ -1,7 +1,7 @@
 <template>
     <div class="box">
       <!-- Box content goes here -->
-      <p>This is Schedule</p>
+      <p>This is Top Clients</p>
     </div>
   </template>
   

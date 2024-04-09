@@ -1,9 +1,9 @@
 <!-- Dashboard.vue -->
 <script setup lang="ts">
-import Schedule from './dash_comp/Schedule.vue'
+import Schedule from './dash_comp/UpcomingSession.vue'
 import Booking from './dash_comp/Bookings.vue'
 import Finance from './dash_comp/Finances.vue'
-import BoxFour from './dash_comp/BoxFour.vue'
+import BoxFour from './dash_comp/ClubStats.vue'
 import Button from 'primevue/button'
 import router from "@/router";
 
@@ -72,4 +72,4 @@ h2 {
 }
 
 /* Additional styling as needed */
-</style>
+</style>./dash_comp/ClubStats.vue
