@@ -32,8 +32,8 @@ watch(paymentAmount, (newValue, oldValue) => {
   }
 });
 
-function validateAmount(event) {
-  // Replace non-digits with an empty string
+function validateAmount(event: any) {
+ // Replace non-digits with an empty string
   paymentAmount.value = event.target.value.replace(/[^0-9.]+/g, '');
 }
 
