@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -60,13 +61,39 @@ func main() {
 
 // serveVueApp serves the Vue app
 func serveVueApp(r *chi.Mux, fsRoot string) {
-	// Find the absolute path of the Vue app
 	absPath, err := filepath.Abs(fsRoot)
 	if err != nil {
 		log.Fatalf("Error calculating absolute path: %s", err)
 	}
-	// File server for the Vue app
-	fs := http.FileServer(http.Dir(absPath))
-	// Handle all requests to the root URL from the dist folder
-	r.Handle("/*", http.StripPrefix("/", fs)) // Serve static files
+
+	// Define a custom file server that uses the improved logic
+	fileServer(r, "/", http.Dir(absPath), absPath)
+}
+
+// fileServer sets up a handler to serve static files and fallback to index.html where necessary
+func fileServer(r chi.Router, path string, root http.FileSystem, distPath string) {
+	if strings.ContainsAny(path, "{}*") {
+		panic("FileServer does not permit URL parameters.")
+	}
+
+	fs := http.StripPrefix(path, http.FileServer(root))
+
+	// Ensure the path ends with a "/"
+	if path != "/" && path[len(path)-1] != '/' {
+		r.Get(path, http.RedirectHandler(path+"/", http.StatusMovedPermanently).ServeHTTP)
+		path += "/"
+	}
+
+	// Catch-all handler for serving files or index.html as a fallback
+	r.Get(path+"*", func(w http.ResponseWriter, r *http.Request) {
+		// Try opening the requested file to see if it exists
+		requestedPath := r.URL.Path
+		if _, err := root.Open(requestedPath); err != nil {
+			// If the file does not exist, serve index.html
+			http.ServeFile(w, r, filepath.Join(distPath, "index.html"))
+		} else {
+			// If the file exists, serve it
+			fs.ServeHTTP(w, r)
+		}
+	})
 }
