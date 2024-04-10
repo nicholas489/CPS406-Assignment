@@ -11,7 +11,6 @@ declare module 'vue' {
     Bill: typeof import('./src/components/dash_comp/Bill.vue')['default']
     Bookings: typeof import('./src/components/dash_comp/Bookings.vue')['default']
     Button: typeof import('primevue/button')['default']
-
     Clients: typeof import('./src/components/dash_comp/clients.vue')['default']
     ClubStats: typeof import('./src/components/dash_comp/ClubStats.vue')['default']
     CreateSession: typeof import('./src/components/dash_comp/CreateSession.vue')['default']
@@ -26,7 +25,9 @@ declare module 'vue' {
     LineChart: typeof import('./src/components/organisms/LineChart.vue')['default']
     LoginForm: typeof import('./src/components/organisms/loginForm.vue')['default']
     Navbar: typeof import('./src/components/organisms/navbar.vue')['default']
+    NewClass: typeof import('./src/components/organisms/newClass.vue')['default']
     Overview: typeof import('./src/components/dash_comp/Overview.vue')['default']
+    PayBill: typeof import('./src/components/organisms/PayBill.vue')['default']
     PaymentForm: typeof import('./src/components/organisms/PaymentForm.vue')['default']
     RecentClient: typeof import('./src/components/dash_comp/RecentClient.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

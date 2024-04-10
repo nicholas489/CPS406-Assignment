@@ -13,7 +13,7 @@
   const router = useRouter();
   
   function goToCreateSession() {
-    router.push({ name: 'create-session' });
+    router.push({ name: 'create-class' });
   }
   </script>
   

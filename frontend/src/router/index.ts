@@ -3,7 +3,7 @@ import LoginView from '../views/LoginView.vue'
 import DashboardView from '../views/UserDashboardView.vue'
 import PaymentView from '@/views/PaymentView.vue'
 import CoachDashboardView from "@/views/CoachDashboardView.vue";
-import StartSessionView from "@/views/StartSessionView.vue";
+import NewClass from "@/components/organisms/newClass.vue";
 
 
 const router = createRouter({
@@ -30,10 +30,11 @@ const router = createRouter({
       component: PaymentView
     },
     {
-      path: '/create-session',
-      name: 'create-session',
-      component: StartSessionView
-    }
+      path: '/create-class',
+      name: 'create-class',
+      component: NewClass
+    } 
+   
   ]
 },
 

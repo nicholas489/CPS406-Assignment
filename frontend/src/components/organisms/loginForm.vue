@@ -16,11 +16,12 @@ const coach = ref();
 const submitForm = async () => {
 
     // Sheel's stuff to bypass (i will remove it when i'm done with dashboards (pls don't remove it just keep it commented out)
-    // if (coach.value){
-    //     router.push({name: 'dashboard-coach'});
-    // } else {
-    //     router.push({ name: 'dashboard-user' });
-    // };
+    if (coach.value){
+        router.push({name: 'dashboard-coach'});
+    } else {
+        router.push({ name: 'dashboard-user' });
+    };
+    //---------------------------------------------
     if (!username.value || !password.value) {
         toast.add({severity: 'error', summary: 'Login', detail: 'Please fill in all fields', life: 3000});
         return;
@@ -37,22 +38,6 @@ const submitForm = async () => {
     } else {
         router.push({ name: 'dashboard-user' });
     };
-    // if (!username.value || !password.value) {
-    //     toast.add({severity: 'error', summary: 'Login', detail: 'Please fill in all fields', life: 3000});
-    //     return;
-    // }
-    // const authStore = useAuthStore();
-    // const loginResult = await authStore.login({email: username.value, password: password.value}, coach.value);
-    // if (loginResult[0]) {
-    //     toast.add({severity: 'success', summary: 'Login', detail: 'Successfully Logged in', life: 3000});
-    //     if (authStore.isCoach) {
-    //         await router.push({name: 'dashboard-coach'});
-    //     } else {
-    //         await router.push({name: 'dashboard-user'});
-    //     }
-    // } else {
-    //     toast.add({severity: 'error', summary: 'Login', detail: loginResult[1], life: 3000});
-    // }
 };
 </script>
 
