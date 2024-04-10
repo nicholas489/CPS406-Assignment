@@ -39,7 +39,7 @@
   
   .go-button {
     padding: 10px 15px;
-    background-color: #007bff;
+    background-color: #28bc84;
     color: white;
     border: none;
     border-radius: 4px;
