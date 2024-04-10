@@ -6,12 +6,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Name        string  `json:"name"`
-	Password    string  `json:"password"`
-	Email       string  `json:"email" gorm:"index;unique"`
-	PhoneNumber int     `json:"phone_number"`
-	Balance     int     `json:"balance"`
-	Events      []Event `gorm:"many2many:user_events;"` // Many-to-Many relationship
+	Name                    string  `json:"name"`
+	Password                string  `json:"password"`
+	Email                   string  `json:"email" gorm:"index;unique"`
+	PhoneNumber             int     `json:"phone_number"`
+	InAdvancePaymentCounter int     `json:"in_advance_payment_counter"`
+	Balance                 int     `json:"balance"`
+	Events                  []Event `gorm:"many2many:user_events;"` // Many-to-Many relationship
 }
 
 type Event struct {
@@ -29,6 +30,7 @@ type ReceiveEvent struct {
 }
 
 type UserBalance struct {
-	UserEmail string `json:"email"`
-	Amount    int    `json:"Amount"`
+	UserEmail        string `json:"email"`
+	Amount           int    `json:"Amount"`
+	InAdvancePayment bool   `json:"in_advance_payment"`
 }
