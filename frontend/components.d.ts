@@ -33,6 +33,7 @@ declare module 'vue' {
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     TopClient: typeof import('./src/components/dash_comp/TopClient.vue')['default']
     UpcomingSession: typeof import('./src/components/dash_comp/UpcomingSession.vue')['default']
+    UserStats: typeof import('./src/components/dash_comp/UserStats.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }
