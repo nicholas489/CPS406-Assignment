@@ -11,6 +11,8 @@ declare module 'vue' {
     Bill: typeof import('./src/components/dash_comp/Bill.vue')['default']
     Bookings: typeof import('./src/components/dash_comp/Bookings.vue')['default']
     Button: typeof import('primevue/button')['default']
+
+    Clients: typeof import('./src/components/dash_comp/clients.vue')['default']
     ClubStats: typeof import('./src/components/dash_comp/ClubStats.vue')['default']
     CreateSession: typeof import('./src/components/dash_comp/CreateSession.vue')['default']
     Dashboard: typeof import('./src/components/Dashboard.vue')['default']
@@ -26,10 +28,13 @@ declare module 'vue' {
     Navbar: typeof import('./src/components/organisms/navbar.vue')['default']
     Overview: typeof import('./src/components/dash_comp/Overview.vue')['default']
     PaymentForm: typeof import('./src/components/organisms/PaymentForm.vue')['default']
+    RecentClient: typeof import('./src/components/dash_comp/RecentClient.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     TopClient: typeof import('./src/components/dash_comp/TopClient.vue')['default']
+    TotalSession: typeof import('./src/components/dash_comp/TotalSession.vue')['default']
+    UpcomingClasses: typeof import('./src/components/dash_comp/UpcomingClasses.vue')['default']
     UpcomingSession: typeof import('./src/components/dash_comp/UpcomingSession.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }

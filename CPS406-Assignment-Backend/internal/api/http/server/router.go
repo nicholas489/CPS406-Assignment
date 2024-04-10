@@ -2,6 +2,7 @@ package server
 
 import (
 	"CPS406-Assignment-Backend/internal/api/http/coach"
+	"CPS406-Assignment-Backend/internal/api/http/finance"
 	"CPS406-Assignment-Backend/internal/api/http/user"
 	"CPS406-Assignment-Backend/internal/util"
 	"github.com/go-chi/chi/v5"
@@ -65,6 +66,10 @@ func Server(r chi.Router, db *gorm.DB) {
 			coach.DeleteUser(writer, request, db)
 		})
 
+		r.Put("/{id}/pay", func(writer http.ResponseWriter, request *http.Request) {
+			finance.PayBalanceUser(writer, request, db)
+		})
+
 	})
 	// Route for the coach
 	r.Route("/coach", func(r chi.Router) {
@@ -91,8 +96,6 @@ func Server(r chi.Router, db *gorm.DB) {
 
 		// Get an event by id
 
-
-
 		r.Get("/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			coach.GetEvent(writer, request, db)
 		})
@@ -112,6 +115,21 @@ func Server(r chi.Router, db *gorm.DB) {
 		// Check the cookie
 		r.Post("/session", func(writer http.ResponseWriter, request *http.Request) {
 			util.CheckCookie(writer, request)
+		})
+	})
+	// Route for the finance
+	r.Route("/finance", func(r chi.Router) {
+		// Get all the years of finance
+		r.Get("/", func(writer http.ResponseWriter, request *http.Request) {
+			finance.GetOrganizationAccount(writer, request, db)
+		})
+		// Get the finance by year
+		r.Get("/{year}", func(writer http.ResponseWriter, request *http.Request) {
+			finance.GetYearlyAccount(writer, request, db)
+		})
+		// Get the finance by month
+		r.Get("/{year}/{month}", func(writer http.ResponseWriter, request *http.Request) {
+			finance.GetMonthlyAccount(writer, request, db)
 		})
 	})
 }
