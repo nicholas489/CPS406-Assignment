@@ -37,6 +37,7 @@ declare module 'vue' {
     TotalSession: typeof import('./src/components/dash_comp/TotalSession.vue')['default']
     UpcomingClasses: typeof import('./src/components/dash_comp/UpcomingClasses.vue')['default']
     UpcomingSession: typeof import('./src/components/dash_comp/UpcomingSession.vue')['default']
+    UserStats: typeof import('./src/components/dash_comp/UserStats.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }

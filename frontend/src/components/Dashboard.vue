@@ -3,7 +3,7 @@
 import Schedule from './dash_comp/UpcomingSession.vue'
 import Booking from './dash_comp/Bookings.vue'
 import Finance from './dash_comp/Finances.vue'
-import BoxFour from './dash_comp/ClubStats.vue'
+import UserStats from './dash_comp/UserStats.vue'
 import Button from 'primevue/button'
 
 import { useRouter } from 'vue-router'
@@ -29,7 +29,7 @@ const logout = () => {
       <Schedule />
       <Booking />
       <Finance />
-      <BoxFour /> <!-- Remove or rename later just for testing reasons -->
+      <UserStats /> 
     </div>
 
     <div class="logout-container">
