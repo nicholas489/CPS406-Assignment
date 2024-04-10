@@ -19,18 +19,23 @@ CPS406-Assignment-Backend/
 │       └── http/                  # HTTP transport layer specific code
 │           ├── coach/             # Coach-related HTTP handlers
 │           │   └── coach.go       # Handles coach-related requests
+│           ├── finance/           # Finance-related HTTP handlers
+│           │   └── finance.go     # Handles finance-related requests
 │           ├── server/            # Server configuration and setup
 │           │   └── router.go      # Routes and server setup
 │           └── user/              # User-related HTTP handlers
 │               └── user.go        # Handles user-related requests
 │   └── db/                        # Database configuration and initialization
 │       └── db.go                  # Database connection setup and GORM setup
+│       └── seed.go                # Seed data for testing
 │   └── util/                      # Utility functions used across the application
 │       ├── sort.go                # Utility functions for sorting
 │       └── util.go                # General utility functions
 ├── pkg/                           # Library code that's ok to use by external applications
 │   ├── coach/                     # Domain model definitions for coach
 │   │   └── model.go               # Coach model definition
+│   ├── finance/                   # Domain model definitions for finance
+│   │   └── model.go               # Finance model definition
 │   ├── event/                     # Domain model definitions for event
 │   │   └── model.go               # Event model definition
 │   ├── jwtM/                      # Domain model definitions related to JWT middleware
@@ -61,6 +66,7 @@ The following tables describe the data models used in the application and their 
 | Email       | string | `email`        | `index;unique`  | Unique email address for the coach.      |
 | PhoneNumber | int    | `phone_number` | -               | Contact phone number for the coach.      |
 | Password    | string | `password`     | -               | Hashed password for the coach's account. |
+| Owed        | int    | `owed`         | -               | Amount owed to the coach.                | 
 
 ### Event
 
@@ -75,6 +81,8 @@ The following tables describe the data models used in the application and their 
 | Location   | string      | `location`    | -               | Location where the event will be held.   |
 | Cost       | int         | `cost`        | -               | Cost to attend the event.                |
 | Users      | []user.User | `users`       | -               | List of users attending the event.       |
+| EventExpenses | int         | `event_expenses` | - | Cost of running the event.               |
+| CoachExpenses | int         | `coach_expenses` | - | Amount owed to coach.                    |
 
 ### User
 
@@ -97,17 +105,17 @@ Below are tables with sample data that is inserted into the database by the seed
 
 ### Coaches
 
-| UserName  | Email                | PhoneNumber | Password   |
-|-----------|----------------------|-------------|------------|
-| CoachMike | mike@example.com     | 1234567890  | pass123    |
-| CoachAnna | anna@example.com     | 1234567891  | pass456    |
+| UserName  | Email                | PhoneNumber | Password   | Owed       |
+|-----------|----------------------|-------------|------------|------------|
+| CoachMike | mike@example.com     | 1234567890  | pass123    | 1234       |
+| CoachAnna | anna@example.com     | 1234567891  | pass456    | 5678       |
 
 ### Events
 
-| Name          | Coach Email       | Location      | Cost |
-|---------------|-------------------|---------------|------|
-| Morning Yoga  | mike@example.com  | Central Park  | 10   |
-| Evening Run   | anna@example.com  | Riverside     | 5    |
+| Name          | Coach Email       | Location      | Cost | Event Expenses | Coach Expenses |
+|---------------|-------------------|---------------|------|----------------|----------------|
+| Morning Yoga  | mike@example.com  | Central Park  | 10   | 1200           | 1234           |
+| Evening Run   | anna@example.com  | Riverside     | 5    | 2500           | 5678           |
 
 ### Users
 
@@ -124,25 +132,27 @@ This data is meant for initial development and testing only and should not be us
 Below is the detailed table of the API routes, their descriptions, middleware, and the required JSON structure for requests (where applicable).
 
 
-| Method | Endpoint         | Description                                                                 | Middleware                  | Required JSON Structure                                                              |
-|--------|------------------|-----------------------------------------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------|
-| POST   | `api/login/user` | Logs in a user                                                              | None                        | `{ "email": "user@example.com", "password": "password123" }`                         |
-| POST   | `api/login/coach` | Logs in a coach                                                             | None                        | `{ "email": "coach@example.com", "password": "password123" }`                        |
-| POST   | `api/signup/user` | Signs up a new user                                                         | None                        | `{ "name": "John Doe", "email": "newuser@example.com", "password": "password123" }`  |
-| POST   | `api/signup/coach` | Signs up a new coach                                                        | None                        | `{ "name": "Jane Doe", "email": "newcoach@example.com", "password": "password123" }` |
-| GET    | `api/user/{id}`  | Retrieves a specific user by ID                                             | `JwtMiddlewareUser`         | N/A                                                                                  |
-| GET    | `api/user/`      | Retrieves all users                                                         | `JwtMiddlewareUser`         | N/A                                                                                  |
-| POST   | `api/event/join` | Allows a user to join an event                                              | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                   |
-| POST   | `api/event/`     | Allows a coach to create an event                                           | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10 }`                           |
-| GET    | `api/event/{id}` | Retrieves a specific event by name                                          | None                        | N/A                                                                                  |
-| GET    | `api/event/`     | Retrieves all events                                                        | None                        | N/A                                                                                  |
-| DELETE | `api/user/{id}`  | Deletes the user of the corresponding id                                    | None                        | N/A                                                                                  |
-| POST   | `api/auth/session` | Returns contents of cookie                                                  | None                        | N/A                                                                                  |
-| POST   | `api/auth/logout` | Logs out the user                                                           | None                        | N/A                                                                                  |
-| Get | `api/finance` | Retrieves all of the yearly financial data                                  | `JwtMiddlewareCoach` | N/A                                                                                  | 
-| Get | `api/finance/{year}` | Retrieves all of the financial data for a specific year                     | `JwtMiddlewareCoach` | N/A                                                                                  |
-| Get | `api/finance/{year}/{month}` | Retrieves all of the financial data for a specific month in a specific year | `JwtMiddlewareCoach` | N/A                                                                                  |
-| PUT | `api/user/{id}/pay` | Allows a user to pay                                                        | `JwtMiddlewareUser` | `{ "amount": int, "email": "example@example.com", "in_advance_payment": bool }`        |
+| Method | Endpoint         | Description                                                                 | Middleware                  | Required JSON Structure                                                                                |
+|--------|------------------|-----------------------------------------------------------------------------|-----------------------------|--------------------------------------------------------------------------------------------------------|
+| POST   | `api/login/user` | Logs in a user                                                              | None                        | `{ "email": "user@example.com", "password": "password123" }`                                           |
+| POST   | `api/login/coach` | Logs in a coach                                                             | None                        | `{ "email": "coach@example.com", "password": "password123" }`                                          |
+| POST   | `api/signup/user` | Signs up a new user                                                         | None                        | `{ "name": "John Doe", "email": "newuser@example.com", "password": "password123" }`                    |
+| POST   | `api/signup/coach` | Signs up a new coach                                                        | None                        | `{ "name": "Jane Doe", "email": "newcoach@example.com", "password": "password123" }`                   |
+| GET    | `api/user/{id}`  | Retrieves a specific user by ID                                             | `JwtMiddlewareUser`         | N/A                                                                                                    |
+| GET    | `api/user/`      | Retrieves all users                                                         | `JwtMiddlewareUser`         | N/A                                                                                                    |
+| POST   | `api/event/join` | Allows a user to join an event                                              | `JwtMiddlewareUser`         | `{ "event_name": "Yoga Class", "user_email": "user@example.com" }`                                     |
+| POST   | `api/event/`     | Allows a coach to create an event                                           | `JwtMiddlewareCoach`        | `{ "name": "Yoga Class", "location": "Park", "cost": 10, event_expenses: 1200, coach_expenses: 1234 }` |
+| GET    | `api/event/{id}` | Retrieves a specific event by name                                          | None                        | N/A                                                                                                    |
+| GET    | `api/event/`     | Retrieves all events                                                        | None                        | N/A                                                                                                    |
+| DELETE | `api/user/{id}`  | Deletes the user of the corresponding id                                    | None                        | N/A                                                                                                    |
+| POST   | `api/auth/session` | Returns contents of cookie                                                  | None                        | N/A                                                                                                    |
+| POST   | `api/auth/logout` | Logs out the user                                                           | None                        | N/A                                                                                                    |
+| GET    | `api/finance` | Retrieves all of the yearly financial data                                  | `JwtMiddlewareCoach` | N/A                                                                                                    | 
+| GET    | `api/finance/{year}` | Retrieves all of the financial data for a specific year                     | `JwtMiddlewareCoach` | N/A                                                                                                    |
+| GET    | `api/finance/{year}/{month}` | Retrieves all of the financial data for a specific month in a specific year | `JwtMiddlewareCoach` | N/A                                                                                                    |
+| PUT    | `api/user/{id}/pay` | Allows a user to pay                                                        | `JwtMiddlewareUser` | `{ "amount": int, "email": "example@example.com", "in_advance_payment": bool }`                        |
+| GET    | `api/coach/owed/{id}`     | Retrieves the amount owed to a specific coach                                      | `JwtMiddlewareCoach`            | N/A                                                                                                    |
+
 ## Notes
 
 - The `/{id}`, `/{year}` and `/{month}` in the endpoints are placeholders for dynamic values specific to each request.

@@ -17,11 +17,13 @@ type User struct {
 
 type Event struct {
 	gorm.Model
-	Name       string `json:"name" gorm:"index;unique"`
-	CoachEmail string `json:"coach_email"` // Store email to fetch and associate Coach
-	Location   string `json:"location"`
-	Cost       int    `json:"cost"`
-	Users      []User `gorm:"many2many:user_events;"` // Many-to-Many relationship
+	Name          string `json:"name" gorm:"index;unique"`
+	CoachEmail    string `json:"coach_email"` // Store email to fetch and associate Coach
+	Location      string `json:"location"`
+	Cost          int    `json:"cost"`
+	Users         []User `gorm:"many2many:user_events;"` // Many-to-Many relationship
+	EventExpenses int    `json:"event_expenses"`
+	CoachExpenses int    `json:"coach_expenses"`
 }
 
 type ReceiveEvent struct {

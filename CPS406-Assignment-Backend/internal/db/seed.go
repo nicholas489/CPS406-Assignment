@@ -59,8 +59,8 @@ func SeedDatabase(db *gorm.DB) {
 
 func seedCoaches(tx *gorm.DB) error {
 	coaches := []coach.Coach{
-		{Name: "CoachMike", Email: "mike@example.com", PhoneNumber: 1234567890, Password: "pass123"},
-		{Name: "CoachAnna", Email: "anna@example.com", PhoneNumber: 1234567891, Password: "pass456"},
+		{Name: "CoachMike", Email: "mike@example.com", PhoneNumber: 1234567890, Password: "pass123", Owed: 1234},
+		{Name: "CoachAnna", Email: "anna@example.com", PhoneNumber: 1234567891, Password: "pass456", Owed: 5678},
 	}
 
 	for _, c := range coaches {
@@ -78,8 +78,8 @@ func seedCoaches(tx *gorm.DB) error {
 
 func seedEvents(tx *gorm.DB) error {
 	events := []user.Event{
-		{Name: "Morning Yoga", CoachEmail: "mike@example.com", Location: "Central Park", Cost: 10},
-		{Name: "Evening Run", CoachEmail: "anna@example.com", Location: "Riverside", Cost: 5},
+		{Name: "Morning Yoga", CoachEmail: "mike@example.com", Location: "Central Park", Cost: 10, EventExpenses: 1200, CoachExpenses: 1234},
+		{Name: "Evening Run", CoachEmail: "anna@example.com", Location: "Riverside", Cost: 5, EventExpenses: 2500, CoachExpenses: 5678},
 	}
 
 	for _, e := range events {

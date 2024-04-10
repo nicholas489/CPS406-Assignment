@@ -8,4 +8,5 @@ type Coach struct {
 	Email       string `json:"email" gorm:"index;unique"`
 	PhoneNumber int    `json:"phone_number"`
 	Password    string `json:"password"`
+	Owed        int    `json:"owed"`
 }
