@@ -30,6 +30,11 @@ func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	event.Users = []user.User{}
 	// Create the event in the database
 	db.Create(&event)
+	//Update the coach expenses
+	var coach coach.Coach
+	db.First(&coach, "email = ?", event.CoachEmail)
+	coach.Owed += event.CoachExpenses
+	db.Save(&coach)
 	// Send the event as a response and set the status code to 201 (Created)
 	writer.WriteHeader(http.StatusCreated)
 	json.NewEncoder(writer).Encode(event)
@@ -165,4 +170,22 @@ func GetAllCoaches(writer http.ResponseWriter, request *http.Request, db *gorm.D
 	db.Find(&coaches)
 	// Send the coaches as a response
 	json.NewEncoder(writer).Encode(coaches)
+}
+
+func GetOwed(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
+	type Owed struct {
+		Name string `json:"name"`
+		Owed int    `json:"owed"`
+	}
+	var coach coach.Coach
+	// Get the id from the url
+	id := chi.URLParam(request, "id")
+	// Get the coach from the database
+	db.First(&coach, "id = ?", id)
+	// Get the amount owed
+	var owed Owed
+	owed.Name = coach.Name
+	owed.Owed = coach.Owed
+	// Send the owed as a response
+	json.NewEncoder(writer).Encode(owed)
 }
