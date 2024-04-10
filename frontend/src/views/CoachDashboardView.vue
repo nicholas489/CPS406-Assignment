@@ -8,22 +8,22 @@ import NewSession from '@/components/dash_comp/CreateSession.vue'
 import TopClient from '@/components/dash_comp/TopClient.vue'
 import OverView from '@/components/dash_comp/Overview.vue'
 import Button from 'primevue/button'
-import router from "@/router";
+import {useAuthStore} from "@/stores/authStore";
+import {useRouter} from "vue-router";
 
 
-  const logout = () => {
-  localStorage.removeItem('username');
-  localStorage.removeItem('password');
-  router.push('/login');
+
+const authStore = useAuthStore();
+const router = useRouter();
+const logout = () => {
+  authStore.logout();
+  router.push('login');
 };
-
 
 </script>
 
 <template>
   <div class="dashboard">
-    <h1>Coach Dashboard</h1>
-    <h3>Welcome, "name"!</h3>
     <div class="grid grid-cols-2 gap-4">
       <OverView/>
       <ClubStats/>

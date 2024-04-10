@@ -1,85 +1,60 @@
 <template>
-    <div class="upcoming-appointments box">
-      <div class="header">
-        <div class="icon-calendar"></div>
-        <h3>Upcoming Appointments</h3>
-      </div>
-      <!-- ... rest of your component -->
+  <div class="box">
+    <div class="upcoming-classes-container">
+      <h2 class="upcoming-classes-title">Upcoming Classes</h2>
+      <ul class="upcoming-classes-list">
+        <li v-for="(classInfo, index) in upcomingClasses" :key="index" class="class-item">
+          <div><strong>Class:</strong> {{ classInfo.name }}</div>
+          <div><strong>Date:</strong> {{ classInfo.date }}</div>
+          <div><strong>Time:</strong> {{ classInfo.time }}</div>
+        </li>
+      </ul>
     </div>
-  </template>
-  
-  <script setup>
-  // ... your script setup
-  </script>
-  
-  <style scoped>
-  .box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    height: 300px;
-    padding: 20px;
-    text-align: center; /* Center align the text */
-  }
-  
-  .header {
-    display: flex;
-    align-items: center;
-    /* ... */
-  }
+  </div>
+</template>
 
-  .icon-calendar {
-    display: inline-block;
-    width: 20px; /* Width of the icon */
-    height: 20px; /* Height of the icon */
-    position: relative;
-    border: 2px solid #666; /* Border color */
-    border-radius: 3px; /* Rounded corners */
-  }
-  
-  .icon-calendar:before {
-    content: "";
-    display: block;
-    width: 60%; /* Width of the upper box to resemble the binding of a calendar */
-    height: 4px; /* Height of the upper box */
-    background-color: #666; /* Color of the upper box */
-    position: absolute;
-    top: -6px; /* Positioning just above the calendar */
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .icon-calendar:after {
-    content: "";
-    display: block;
-    width: 100%; /* Width of the bottom part of the calendar */
-    height: 4px; /* Height of the bottom part */
-    background-color: #666; /* Color of the bottom part */
-    position: absolute;
-    bottom: 4px; /* Positioning from the bottom inside the calendar */
-    left: 0;
-  }
-  
-  
-  /* Play Button Icon Styles */
-  .start-session-button:before {
-    .start-session-button:before {
-        content: "";
-        display: inline-block;
-        width: 0;
-        height: 0;
-        border-top: 7px solid transparent; /* Creates the top part of the triangle */
-        border-bottom: 7px solid transparent; /* Creates the bottom part of the triangle */
-        border-left: 10px solid #666; /* Creates the base of the triangle, which is the 'play' symbol */
-        vertical-align: middle;
-        margin-right: 5px; /* Adjust the spacing between icon and button text if needed */
-      }
-      
-  }
-  
-  /* ... other styles ... */
-  </style>
-  
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const upcomingClasses = ref([
+  // Placeholder data for upcoming classes
+  { name: 'Yoga Basics', date: '2024-04-12', time: '10:00 AM' },
+  { name: 'Advanced Pilates', date: '2024-04-15', time: '12:00 PM' },
+  { name: 'Cardio Kickboxing', date: '2024-04-18', time: '5:00 PM' },
+  // Add more placeholder data as needed
+]);
+
+// Additional script logic to handle data passing can be added here later
+</script>
+
+<style scoped>
+.box {
+  display: block; /* Changed from flex to block for a vertical layout */
+  max-height: 300px; /* Max height for scrollable area */
+  overflow-y: auto; /* Enables vertical scrolling if content overflows */
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.upcoming-classes-container {
+  width: 100%;
+}
+
+.upcoming-classes-title {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.upcoming-classes-list {
+  list-style-type: none; /* Remove list item bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margin */
+}
+
+.class-item {
+  margin-bottom: 1rem; /* Space between items */
+  padding: 0.5rem;
+  border-bottom: 1px solid #e5e7eb; /* Light border between items */
+}
+</style>
