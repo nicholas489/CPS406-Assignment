@@ -12,12 +12,10 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "chart.js": "^4.4.2",
     "pinia": "^2.1.7",
     "primeicons": "^6.0.1",
     "primevue": "^3.50.0",
     "vue": "^3.4.21",
-    "vue-chart.js": "^0.2.0",
     "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.0"
   },
