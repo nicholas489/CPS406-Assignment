@@ -1,9 +1,12 @@
 package util
 
 import (
+	"CPS406-Assignment-Backend/pkg/coach"
 	"CPS406-Assignment-Backend/pkg/jwtM"
+	"CPS406-Assignment-Backend/pkg/user"
 	"encoding/json"
 	"github.com/golang-jwt/jwt/v4"
+	"gorm.io/gorm"
 	"net/http"
 	"os"
 	"time"
@@ -212,7 +215,7 @@ func CombinedJwtMiddleware(adminMiddleware, coachMiddleware func(http.Handler) h
 }
 
 // CheckCookie checks the cookie for the JWT token
-func CheckCookie(w http.ResponseWriter, r *http.Request) {
+func CheckCookie(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	// Get the token from the Cookie
 	cookie, err := r.Cookie("auth_token")
 	if err != nil {
@@ -238,10 +241,22 @@ func CheckCookie(w http.ResponseWriter, r *http.Request) {
 		// Make a response struct to remove the issuer and expiration time
 		type Response struct {
 			Email      string          `json:"email"`
+			Id         uint            `json:"id"`
 			Privileges jwtM.Privileges `json:"privileges"`
 		}
 		// Send the claims as a response
 		var response Response
+		if claims.Privileges.Coach {
+			var coach coach.Coach
+			db.First(&coach, "email = ?", claims.Username)
+			response.Id = coach.ID
+
+		}
+		if claims.Privileges.User {
+			var user user.User
+			db.First(&user, "email = ?", claims.Username)
+			response.Id = user.ID
+		}
 		response.Email = claims.Username
 		response.Privileges = claims.Privileges
 		w.Header().Set("Content-Type", "application/json")

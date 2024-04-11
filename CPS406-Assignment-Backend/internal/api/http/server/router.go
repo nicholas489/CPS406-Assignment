@@ -49,12 +49,12 @@ func Server(r chi.Router, db *gorm.DB) {
 			user.GetUser(writer, request, db)
 
 		})
-		r.Get("/{id}/events", func(writer http.ResponseWriter, request *http.Request) {
-			user.GetEvents(writer, request, db)
-		})
 		// Get the events that the user is in
 		r.Get("/{id}/events", func(writer http.ResponseWriter, request *http.Request) {
 			user.GetEvents(writer, request, db)
+		})
+		r.Get("/{id}/events/count", func(writer http.ResponseWriter, request *http.Request) {
+			user.GetEventsCount(writer, request, db)
 		})
 		// Get all the users
 		r.Get("/", func(writer http.ResponseWriter, request *http.Request) {
@@ -117,7 +117,7 @@ func Server(r chi.Router, db *gorm.DB) {
 	r.Route("/auth", func(r chi.Router) {
 		// Check the cookie
 		r.Post("/session", func(writer http.ResponseWriter, request *http.Request) {
-			util.CheckCookie(writer, request)
+			util.CheckCookie(writer, request, db)
 		})
 	})
 	// Route for the finance
