@@ -10,5 +10,7 @@ export type Event = {
         Users: [number];
         event_expenses: number;
         coach_expenses: number;
+        date: string;
+        time: string;
 };
 

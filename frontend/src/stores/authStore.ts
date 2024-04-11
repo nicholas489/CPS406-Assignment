@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia';
+
 type severity = "warn" | "success" | "info" | "error" | "secondary" | "contrast" | undefined;
 export const useAuthStore = defineStore('auth', {
     state: (): {
@@ -7,14 +8,16 @@ export const useAuthStore = defineStore('auth', {
         initialized: boolean,
         isCoach: boolean,
         id: number,
-        toasts: [severity,string,string][]
+        toasts: [severity, string, string][],
+        amountOwed: number
     } => ({
         isAuthenticated: false,
         email: '',
         initialized: false,
         isCoach: false,
         id: 0,
-        toasts: []
+        toasts: [],
+        amountOwed: 0
     }),
     actions: {
         async initAuth(): Promise<void> {
@@ -27,11 +30,13 @@ export const useAuthStore = defineStore('auth', {
                     this.isCoach = res.privileges.coach;
                     this.isAuthenticated = true;
                     this.id = res.id;
+                    await this.refreshOwed()
                     console.log(
                         `${this.email}, ${this.isCoach}, ${this.id}`
                     )
                     break;
                 case 401:
+                case 404:
                     this.isAuthenticated = false;
                     break;
                 default:
@@ -54,6 +59,7 @@ export const useAuthStore = defineStore('auth', {
                 this.isAuthenticated = true;
                 this.isCoach = isCoach;
                 this.id = body.id;
+                await this.refreshOwed();
                 return [true, ''];
             } else {
                 return [false, await body.error];
@@ -83,6 +89,13 @@ export const useAuthStore = defineStore('auth', {
         },
         async clearToast() {
             this.toasts = [];
+        },
+        async refreshOwed() {
+            if (this.isCoach) {
+                this.amountOwed = (await (await fetch(`/api/coach/owed/${this.id}`)).json()).owed;
+            } else {
+                this.amountOwed = (await (await fetch(`/api/user/${this.id}`)).json()).balance;
+            }
         }
     },
 });

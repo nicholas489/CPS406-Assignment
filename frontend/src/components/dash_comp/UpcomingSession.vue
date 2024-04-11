@@ -5,7 +5,7 @@
             <ul class="upcoming-classes-list">
                 <li v-for="(classInfo, index) in upcomingClasses" :key="index" class="class-item">
                     <div><strong>Class:</strong> {{ classInfo.name }}</div>
-                    <div><strong>Date/Time:</strong> {{ formatDate(classInfo.CreatedAt) }}</div>
+                    <div><strong>Date/Time:</strong> {{ formatDate(`${classInfo.date}T${classInfo.time}`) }}</div>
                     <div><strong>Location:</strong> {{ classInfo.location }}</div>
                 </li>
             </ul>
@@ -25,7 +25,6 @@ onMounted(async () => {
 
 const formatDate = (string: string) => {
     const date = new Date(string);
-    date.setDate(date.getDate() + 7);
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
         month: 'long',

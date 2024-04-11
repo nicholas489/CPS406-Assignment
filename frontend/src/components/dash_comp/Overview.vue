@@ -1,7 +1,7 @@
 <template>
     <div class="box">
         <h1>Coach Dashboard</h1>
-        <h3>Welcome, "name"!</h3>
+        <h3>Welcome to your dashboard</h3>
     </div>
 </template>
 
