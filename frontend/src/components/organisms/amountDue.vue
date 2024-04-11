@@ -1,23 +1,28 @@
-<template>
-  <div class="flex flex-col gap-4 payment-form">
-    <div class="font-bold">Total Amount Due: ${{ totalAmountDue }}</div>
-    <div class="flex items-center gap-2">
-      <label for="amount" class="block">Enter amount to pay:</label>
-      <input type="text" id="amount" v-model="paymentAmount" @input="validateAmount" class="w-32 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Amount" />
-    </div>
-    <Button  class='payment-button' label="Proceed to Payment" @click="submitPayment" />
-  </div>
-</template>
+
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
+import { useAuthStore } from "@/stores/authStore";
 
 const toast = useToast();
 const router = useRouter();
-const totalAmountDue = 1000; // Placeholder value
+const balance = ref(0); // Placeholder value
 const paymentAmount = ref('');
+const authStore = useAuthStore();
+
+const update = async () => {
+    const response = await fetch(`/api/user/${authStore.id}`);
+    const body = await response.json();
+    balance.value = body.balance;
+};
+
+watch(() => authStore.isAuthenticated, async (newVal) => {
+    if (newVal) {
+        await update();
+    }
+}, {immediate: true});
 
 watch(paymentAmount, (newValue, oldValue) => {
   if (newValue !== '' && isNaN(Number(newValue))) {
@@ -60,6 +65,16 @@ function submitPayment() {
 }
 </script>
 
+<template>
+  <div class="flex flex-col gap-4 payment-form">
+    <div class="font-bold">Balance: ${{ balance }}</div>
+    <div class="flex items-center gap-2">
+      <label for="amount" class="block">Enter amount to pay:</label>
+      <input type="text" id="amount" v-model="paymentAmount" @input="validateAmount" class="w-32 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" placeholder="Amount" />
+    </div>
+    <Button  class='payment-button' label="Proceed to Payment" @click="submitPayment" />
+  </div>
+</template>
 <style scoped>
 /* Add more styles as needed */
 </style>

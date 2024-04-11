@@ -1,33 +1,36 @@
-  <script setup lang="ts">
-  import {onMounted, ref} from 'vue';
+<script setup lang="ts">
+import {onMounted, ref, watch} from 'vue';
+import {useAuthStore} from "@/stores/authStore";
 
-  const classesAttended = ref(69); // Example data, replace with real data later
-  const upcomingUserClasses = ref(0);
+const authStore = useAuthStore();
+const classesAttended = ref(69); // Example data, replace with real data later
+const upcomingUserClasses = ref(0);
 
-  onMounted(async () => {
-      const response = await fetch('/api/event');
+watch(() => authStore.isAuthenticated, async (_) => {
+    const response = await fetch('/api/event');
     upcomingUserClasses.value = (await response.json()).length
-  })
-  // Logic for fetching real user stats will go here
-  </script>
+    classesAttended.value = parseInt(await (await fetch(`/api/user/${authStore.id}/events/count`)).text())
+})
+// Logic for fetching real user stats will go here
+</script>
 
 <template>
     <div class="box">
-      <div class="user-stats">
-        <div class="stat-item">
-          <div class="stat-value">{{ classesAttended }}</div>
-          <div class="stat-label">Classes Attended</div>
+        <div class="user-stats">
+            <div class="stat-item">
+                <div class="stat-value">{{ classesAttended }}</div>
+                <div class="stat-label">Classes Attended</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ upcomingUserClasses }}</div>
+                <div class="stat-label">Upcoming Classes</div>
+            </div>
         </div>
-        <div class="stat-item">
-          <div class="stat-value">{{ upcomingUserClasses }}</div>
-          <div class="stat-label">Upcoming Classes</div>
-        </div>
-      </div>
     </div>
-  </template>
-  
-  <style scoped>
-  .box {
+</template>
+
+<style scoped>
+.box {
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -36,40 +39,40 @@
     border-radius: 8px;
     padding: 20px;
     height: auto;
-  }
-  
-  .user-stats {
+}
+
+.user-stats {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
     width: 100%;
-  }
-  
-  .stat-item {
+}
+
+.stat-item {
     text-align: center;
-  }
-  
-  .stat-value {
+}
+
+.stat-value {
     font-size: 2em;
     font-weight: bold;
     color: #4CAF50;
     margin-bottom: 0.25em;
-  }
-  
-  .stat-label {
+}
+
+.stat-label {
     font-size: 1em;
     color: #555;
-  }
-  
-  @media (max-width: 600px) {
+}
+
+@media (max-width: 600px) {
     .user-stats {
-      flex-direction: column;
+        flex-direction: column;
     }
-  
+
     .stat-item {
-      margin-bottom: 1em;
+        margin-bottom: 1em;
     }
-  }
-  </style>
+}
+</style>
   

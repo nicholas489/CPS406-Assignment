@@ -28,7 +28,9 @@ import {useAuthStore} from "@/stores/authStore";
 import {useToast} from "primevue/usetoast";
 import type {Ref} from 'vue'
 import type {Event} from '@/types';
-
+import {useRoute, useRouter} from "vue-router";
+const route = useRoute();
+const router = useRouter();
 const toast = useToast();
 const authStore = useAuthStore();
 const upcomingClasses: Ref<Event[]> = ref([]);
@@ -63,7 +65,8 @@ const bookClass = async () => {
     });
     const content = await rawResponse.json();
     if (rawResponse.ok) {
-        toast.add({severity: 'success', summary: 'Booking', detail: 'Successfully RSVP\'d', life: 3000});
+        await authStore.pushToast('success', 'Booking', 'Successfully RSVP\'d');
+        router.replace({ name: 'redirect', params: { to: route.fullPath } }) //this does NOT work and I give up
     } else {
         toast.add({severity: 'error', summary: 'Booking', detail: content.error, life: 3000});
     }
