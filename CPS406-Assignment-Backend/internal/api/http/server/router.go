@@ -49,12 +49,12 @@ func Server(r chi.Router, db *gorm.DB) {
 			user.GetUser(writer, request, db)
 
 		})
-		r.Get("/{id}/events", func(writer http.ResponseWriter, request *http.Request) {
-			user.GetEvents(writer, request, db)
-		})
 		// Get the events that the user is in
 		r.Get("/{id}/events", func(writer http.ResponseWriter, request *http.Request) {
 			user.GetEvents(writer, request, db)
+		})
+		r.Get("/{id}/events/count", func(writer http.ResponseWriter, request *http.Request) {
+			user.GetEventsCount(writer, request, db)
 		})
 		// Get all the users
 		r.Get("/", func(writer http.ResponseWriter, request *http.Request) {

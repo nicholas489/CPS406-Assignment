@@ -316,3 +316,13 @@ func LeaveEvent(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 	util.SendJSONError(w, "User not in event", http.StatusNotFound)
 
 }
+
+func GetEventsCount(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
+	var user user.User
+	// get the id from the url and search for the user
+	db.First(&user, "id = ?", chi.URLParam(request, "id"))
+	// get the count of events that the user is in
+	c := db.Model(&user).Association("Events").Count()
+	// send the count as a response
+	json.NewEncoder(writer).Encode(c)
+}
