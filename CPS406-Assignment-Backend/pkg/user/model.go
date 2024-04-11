@@ -18,8 +18,10 @@ type User struct {
 type Event struct {
 	gorm.Model
 	Name          string `json:"name" gorm:"index;unique"`
-	CoachEmail    string `json:"coach_email"` // Store email to fetch and associate Coach
+	CoachID       int    `json:"coach_id"` // Store email to fetch and associate Coach
 	Location      string `json:"location"`
+	Date          string `json:"date"`
+	Time          string `json:"time"`
 	Cost          int    `json:"cost"`
 	Users         []User `gorm:"many2many:user_events;"` // Many-to-Many relationship
 	EventExpenses int    `json:"event_expenses"`
