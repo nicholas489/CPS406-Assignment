@@ -3,8 +3,7 @@ import {defineStore} from 'pinia';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isAuthenticated: false,
-        username: '',
-        baid: 0,
+        email: '',
         initialized: false,
         isCoach: false,
     }),
@@ -17,8 +16,7 @@ export const useAuthStore = defineStore('auth', {
             switch (response.status) {
                 case 200:
                     const res = await response.json();
-                    this.username = res.Username;
-                    this.baid = res.Baid;
+                    this.email = res.username;
                     this.isCoach = res.privileges.coach;
                     this.isAuthenticated = true;
                     break;
@@ -39,8 +37,7 @@ export const useAuthStore = defineStore('auth', {
             });
             const body = await response.json();
             if (response.ok) {
-                this.username = body.Username;
-                this.baid = body.Baid;
+                this.email = body.email;
                 this.isAuthenticated = true;
                 this.isCoach = isCoach;
                 return [true, ''];
@@ -52,8 +49,7 @@ export const useAuthStore = defineStore('auth', {
             const response = await fetch('/api/logout', {method: 'POST'});
             if (response.ok) {
                 this.isAuthenticated = false;
-                this.username = '';
-                this.baid = 0;
+                this.email = '';
                 this.isCoach = false;
             } else {
                 console.error('Failed to logout:', response.status);
