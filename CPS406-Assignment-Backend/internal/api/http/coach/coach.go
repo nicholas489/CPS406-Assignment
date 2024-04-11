@@ -32,7 +32,7 @@ func PostEvent(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
 	db.Create(&event)
 	//Update the coach expenses
 	var coach coach.Coach
-	db.First(&coach, "email = ?", event.CoachEmail)
+	db.First(&coach, "id = ?", event.CoachID)
 	coach.Owed += event.CoachExpenses
 	db.Save(&coach)
 	// Send the event as a response and set the status code to 201 (Created)

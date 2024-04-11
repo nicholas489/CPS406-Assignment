@@ -78,13 +78,13 @@ func seedCoaches(tx *gorm.DB) error {
 
 func seedEvents(tx *gorm.DB) error {
 	events := []user.Event{
-		{Name: "Morning Yoga", CoachEmail: "mike@example.com", Location: "Central Park", Cost: 10, EventExpenses: 1200, CoachExpenses: 1234},
-		{Name: "Evening Run", CoachEmail: "anna@example.com", Location: "Riverside", Cost: 5, EventExpenses: 2500, CoachExpenses: 5678},
+		{Name: "Morning Yoga", CoachID: 1, Location: "Central Park", Date: "2024-04-11", Time: "06:00:00", Cost: 10, EventExpenses: 1200, CoachExpenses: 1234},
+		{Name: "Evening Run", CoachID: 2, Location: "Riverside", Date: "2024-04-12", Time: "06:00:00", Cost: 5, EventExpenses: 2500, CoachExpenses: 5678},
 	}
 
 	for _, e := range events {
 		var count int64
-		tx.Model(&user.Event{}).Where("name = ? AND coach_email = ?", e.Name, e.CoachEmail).Count(&count)
+		tx.Model(&user.Event{}).Where("name = ? AND coach_email = ?", e.Name, e.CoachID).Count(&count)
 		if count == 0 {
 			if err := tx.Create(&e).Error; err != nil {
 				return err
