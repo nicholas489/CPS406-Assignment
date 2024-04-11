@@ -80,6 +80,11 @@ func seedEvents(tx *gorm.DB) error {
 	events := []user.Event{
 		{Name: "Morning Yoga", CoachID: 1, Location: "Central Park", Date: "2024-04-11", Time: "06:00:00", Cost: 10, EventExpenses: 1200, CoachExpenses: 1234},
 		{Name: "Evening Run", CoachID: 2, Location: "Riverside", Date: "2024-04-12", Time: "06:00:00", Cost: 5, EventExpenses: 2500, CoachExpenses: 5678},
+		{Name: "Advanced Cycling", CoachID: 1, Location: "West Side Highway", Date: "2024-04-13", Time: "09:00:00", Cost: 15, EventExpenses: 1800, CoachExpenses: 1234},
+		{Name: "Boxing Class", CoachID: 2, Location: "Downtown Gym", Date: "2024-04-14", Time: "11:00:00", Cost: 20, EventExpenses: 2200, CoachExpenses: 5678},
+		{Name: "Soccer Training", CoachID: 1, Location: "North Field", Date: "2024-04-15", Time: "14:00:00", Cost: 10, EventExpenses: 2500, CoachExpenses: 1234},
+		{Name: "Basketball Workshop", CoachID: 2, Location: "City Arena", Date: "2024-04-16", Time: "16:00:00", Cost: 12, EventExpenses: 2000, CoachExpenses: 5678},
+		{Name: "Swimming 101", CoachID: 1, Location: "Community Pool", Date: "2024-04-17", Time: "07:00:00", Cost: 18, EventExpenses: 3000, CoachExpenses: 1234},
 	}
 
 	for _, e := range events {
