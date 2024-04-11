@@ -7,11 +7,6 @@
         <input type="text" id="eventName" v-model="event.name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
       </div>
 
-        <div class="mb-4">
-        <label for="coachName" class="block text-sm font-medium text-gray-700">Coach Name:</label>
-        <input type="text" id="coachName" v-model="event.coachName" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
-      </div>
-
       <div class="mb-4">
         <label for="coachEmail" class="block text-sm font-medium text-gray-700">Coach Email:</label>
         <input type="email" id="coachEmail" v-model="event.coachEmail" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
@@ -23,8 +18,8 @@
       </div>
 
       <div class="mb-4">
-        <label for="time" class="block text-sm font-medium text-gray-700">Time:</label>
-        <input type="time" id="time" v-model="event.time" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+        <label for="dateTime" class="block text-sm font-medium text-gray-700">Date and Time:</label>
+        <input type="datetime-local" id="dateTime" v-model="event.dateTime" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
       </div>
   
       <div class="mb-4">
@@ -61,8 +56,7 @@
           cost: 0,
           eventExpenses: 0,
           coachExpenses: 0,
-          coachName: '',  // Added field for coach name
-          time: '',       // Added field for time
+          dateTime: '',      
         },
       };
     },
