@@ -84,7 +84,7 @@ func seedEvents(tx *gorm.DB) error {
 
 	for _, e := range events {
 		var count int64
-		tx.Model(&user.Event{}).Where("name = ? AND coach_email = ?", e.Name, e.CoachID).Count(&count)
+		tx.Model(&user.Event{}).Where("name = ? AND coach_id = ?", e.Name, e.CoachID).Count(&count)
 		if count == 0 {
 			if err := tx.Create(&e).Error; err != nil {
 				return err
