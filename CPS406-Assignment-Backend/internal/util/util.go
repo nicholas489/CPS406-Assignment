@@ -250,13 +250,12 @@ func CheckCookie(w http.ResponseWriter, r *http.Request, db *gorm.DB) {
 			var coach coach.Coach
 			db.First(&coach, "email = ?", claims.Username)
 			response.Id = coach.ID
-
-		}
-		if claims.Privileges.User {
+		} else {
 			var user user.User
 			db.First(&user, "email = ?", claims.Username)
 			response.Id = user.ID
 		}
+
 		response.Email = claims.Username
 		response.Privileges = claims.Privileges
 		w.Header().Set("Content-Type", "application/json")
