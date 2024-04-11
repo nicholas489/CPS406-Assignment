@@ -237,12 +237,12 @@ func CheckCookie(w http.ResponseWriter, r *http.Request) {
 	if claims, ok := token.Claims.(*jwtM.CustomClaims); ok && token.Valid {
 		// Make a response struct to remove the issuer and expiration time
 		type Response struct {
-			Username   string          `json:"username"`
+			Email      string          `json:"email"`
 			Privileges jwtM.Privileges `json:"privileges"`
 		}
 		// Send the claims as a response
 		var response Response
-		response.Username = claims.Username
+		response.Email = claims.Username
 		response.Privileges = claims.Privileges
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
