@@ -5,14 +5,23 @@ import Booking from './dash_comp/Bookings.vue'
 import Finance from './dash_comp/Finances.vue'
 import UserStats from './dash_comp/UserStats.vue'
 import Button from 'primevue/button'
+import Toast from 'primevue/toast';
+
 
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
+import {onMounted} from "vue";
+import {useToast} from "primevue/usetoast";
 
+const toast = useToast();
 const authStore = useAuthStore();
 const router = useRouter();
 
-
+onMounted(async () => {
+    for (let e of authStore.toasts) {
+        toast.add({ severity: e[0], summary: e[1], detail: e[2], life: 3000 });
+    }
+})
 const logout = () => {
   authStore.logout();
   router.push('login');
@@ -37,6 +46,7 @@ const logout = () => {
     </div>
 
   </div>
+    <Toast />
 </template>
 
 <style scoped>
