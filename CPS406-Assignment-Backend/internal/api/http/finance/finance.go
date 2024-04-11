@@ -108,7 +108,7 @@ func PayBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.
 		user2.InAdvancePaymentCounter++
 	}
 	// Update the user's balance
-	user2.Balance -= balance.Amount
+	user2.Balance += balance.Amount
 	if err := db.Save(&user2).Error; err != nil {
 		util.SendJSONError(writer, "Failed to update balance", http.StatusInternalServerError)
 		return
