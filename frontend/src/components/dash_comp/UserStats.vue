@@ -1,3 +1,16 @@
+  <script setup lang="ts">
+  import {onMounted, ref} from 'vue';
+
+  const classesAttended = ref(69); // Example data, replace with real data later
+  const upcomingUserClasses = ref(0);
+
+  onMounted(async () => {
+      const response = await fetch('/api/event');
+    upcomingUserClasses.value = (await response.json()).length
+  })
+  // Logic for fetching real user stats will go here
+  </script>
+
 <template>
     <div class="box">
       <div class="user-stats">
@@ -12,15 +25,6 @@
       </div>
     </div>
   </template>
-  
-  <script setup lang="ts">
-  import { ref } from 'vue';
-  
-  const classesAttended = ref(25); // Example data, replace with real data later
-  const upcomingUserClasses = ref(3); // Example data, replace with real data later
-  
-  // Logic for fetching real user stats will go here
-  </script>
   
   <style scoped>
   .box {
