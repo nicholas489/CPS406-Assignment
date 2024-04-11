@@ -5,24 +5,16 @@ import {onMounted, ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'primevue/usetoast';
 import { useAuthStore } from "@/stores/authStore";
+const authStore = useAuthStore();
 
 const toast = useToast();
 const router = useRouter();
-const balance = ref(0); // Placeholder value
+const balance = ref(authStore.amountOwed); // Placeholder value
 const paymentAmount = ref('');
-const authStore = useAuthStore();
 
-const update = async () => {
-    const response = await fetch(`/api/user/${authStore.id}`);
-    const body = await response.json();
-    balance.value = body.balance;
-};
-
-watch(() => authStore.isAuthenticated, async (newVal) => {
-    if (newVal) {
-        await update();
-    }
-}, {immediate: true});
+watch(() => authStore.amountOwed, (a) => {
+    balance.value = a;
+});
 
 watch(paymentAmount, (newValue, oldValue) => {
   if (newValue !== '' && isNaN(Number(newValue))) {

@@ -36,7 +36,7 @@ const submitForm = async () => {
             await router.push({name: 'dashboard-user'});
         }
     } else {
-        router.push({ name: 'dashboard-user' });
+        toast.add({severity: 'error', summary: 'Login', detail: loginResult[1], life: 3000});
     };
 };
 </script>

@@ -25,12 +25,10 @@ const logout = () => {
 <template>
   <div class="dashboard">
     <div class="grid grid-cols-2 gap-4">
-      <OverView/>
       <ClubStats/>
       <UpcomingSession />
       <NewSession/>
       <Finance/>
-      <TopClient/>
       
     </div>
 

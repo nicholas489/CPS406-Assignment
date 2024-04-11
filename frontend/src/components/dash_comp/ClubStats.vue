@@ -18,12 +18,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 
-const totalMembers = ref(150); // Example data, replace with real data later
-const sessionsCompleted = ref(1200); // Example data, replace with real data later
-const upcomingClasses = ref(5); // Example data, replace with real data later
+const totalMembers = ref(0)
+const sessionsCompleted = ref(0);
+const upcomingClasses = ref(0)
 
+onMounted(async () => {
+    totalMembers.value = (await (await fetch(`/api/user`)).json()).length;
+    upcomingClasses.value = (await (await fetch(`/api/event`)).json()).length;
+})
 // Additional script logic to handle dynamic data fetching will go here
 </script>
 

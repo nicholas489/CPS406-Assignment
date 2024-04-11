@@ -5,11 +5,20 @@ import {useAuthStore} from "@/stores/authStore";
 const authStore = useAuthStore();
 const classesAttended = ref(69); // Example data, replace with real data later
 const upcomingUserClasses = ref(0);
-
-watch(() => authStore.isAuthenticated, async (_) => {
+const update = async () => {
     const response = await fetch('/api/event');
     upcomingUserClasses.value = (await response.json()).length
     classesAttended.value = parseInt(await (await fetch(`/api/user/${authStore.id}/events/count`)).text())
+}
+
+watch(() => authStore.isAuthenticated, async (a) => {
+    if (a) {
+        await update();
+    }
+})
+
+onMounted(async () => {
+    await update();
 })
 // Logic for fetching real user stats will go here
 </script>
@@ -19,7 +28,7 @@ watch(() => authStore.isAuthenticated, async (_) => {
         <div class="user-stats">
             <div class="stat-item">
                 <div class="stat-value">{{ classesAttended }}</div>
-                <div class="stat-label">Classes Attended</div>
+                <div class="stat-lacbel">Classes Attended</div>
             </div>
             <div class="stat-item">
                 <div class="stat-value">{{ upcomingUserClasses }}</div>

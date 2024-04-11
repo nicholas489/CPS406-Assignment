@@ -64,11 +64,11 @@ const bookClass = async () => {
         body: JSON.stringify({email: authStore.email, event_id: event.ID})
     });
     const content = await rawResponse.json();
-    if (rawResponse.ok) {
-        await authStore.pushToast('success', 'Booking', 'Successfully RSVP\'d');
-        router.replace({ name: 'redirect', params: { to: route.fullPath } }) //this does NOT work and I give up
-    } else {
+    if (!rawResponse.ok) {
         toast.add({severity: 'error', summary: 'Booking', detail: content.error, life: 3000});
+    } else {
+        toast.add({severity: 'success', summary: 'Booking', detail: "Successfully RSVP'd", life: 3000});
+        await authStore.refreshOwed();
     }
 };
 </script>
