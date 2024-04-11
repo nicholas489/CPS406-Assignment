@@ -7,7 +7,7 @@
       </div>
       <div class="stat-item">
         <div class="stat-value">{{ sessionsCompleted }}</div>
-        <div class="stat-label">Sessions Completed</div>
+        <div class="stat-label">Classes Completed</div>
       </div>
       <div class="stat-item">
         <div class="stat-value">{{ upcomingClasses }}</div>

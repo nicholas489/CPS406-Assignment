@@ -8,7 +8,6 @@
                    placeholder="Amount"/>
         </div>
         <Button class='payment-button' label="Pay Bill" @click="submitOwnerPayment"/>
-        <Button class='details-button' label="View Detailed Bill" @click="viewDetailedBill"/>
     </div>
 </template>
 
@@ -21,7 +20,7 @@ import {useAuthStore} from "@/stores/authStore";
 const authStore = useAuthStore()
 const toast = useToast();
 const router = useRouter();
-const ownerTotalAmountDue = ref(0); // Use ref to make it reactive
+const ownerTotalAmountDue = ref(authStore.amountOwed); // Use ref to make it reactive
 const ownerPaymentAmount = ref('');
 
 watch(() => authStore.amountOwed, (a) => {

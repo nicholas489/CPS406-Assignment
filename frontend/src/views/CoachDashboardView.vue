@@ -7,18 +7,26 @@ import UpcomingSession from '@/components/dash_comp/UpcomingSession.vue'
 import NewSession from '@/components/dash_comp/CreateSession.vue'
 import TopClient from '@/components/dash_comp/TopClient.vue'
 import OverView from '@/components/dash_comp/Overview.vue'
+import Toast from 'primevue/toast';
 import Button from 'primevue/button'
 import {useAuthStore} from "@/stores/authStore";
 import {useRouter} from "vue-router";
-
+import {onMounted} from "vue";
+import {useToast} from "primevue/usetoast";
 
 
 const authStore = useAuthStore();
 const router = useRouter();
+const toast = useToast();
 const logout = () => {
   authStore.logout();
   router.push('login');
 };
+onMounted(() => {
+    for (let e of authStore.toasts) {
+        toast.add({ severity: e[0], summary: e[1], detail: e[2], life: 3000 });
+    }
+})
 
 </script>
 
@@ -35,8 +43,8 @@ const logout = () => {
     <div class="logout-container">
       <Button @click="logout" label="Logout"></Button>
     </div>
-
   </div>
+    <Toast/>
 </template>
 
 <style scoped>

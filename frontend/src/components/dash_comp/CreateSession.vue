@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-      <p>Start a Session</p>
+      <p>Create an Event</p>
       <div class="button-container">
         <button @click="goToCreateSession" class="go-button">Go -></button>
       </div>
