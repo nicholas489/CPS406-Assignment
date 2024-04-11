@@ -117,7 +117,7 @@ func Server(r chi.Router, db *gorm.DB) {
 	r.Route("/auth", func(r chi.Router) {
 		// Check the cookie
 		r.Post("/session", func(writer http.ResponseWriter, request *http.Request) {
-			util.CheckCookie(writer, request)
+			util.CheckCookie(writer, request, db)
 		})
 	})
 	// Route for the finance
