@@ -58,7 +58,7 @@ const navigateToSignUp = () => {
                 <label for="password">Password</label>
             </FloatLabel>
             <input type="checkbox" v-model="coach"/> Coach?
-            <Button label="Submit" type="submit"/>
+            <Button label="Log In" type="submit"/>
              <Button label="Sign Up" class="signup-button" @click="navigateToSignUp" />
         </form>
     </div>

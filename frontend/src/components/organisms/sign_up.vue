@@ -6,6 +6,10 @@
           <InputText id="username" v-model="username" placeholder="Enter your email"/>
           <label for="username">Email</label>
         </FloatLabel>
+          <FloatLabel>
+          <InputText id="name" v-model="name" placeholder="Enter your name"/>
+          <label for="name">Name</label>
+        </FloatLabel>
         <FloatLabel>
           <InputText id="password" v-model="password" type="password" placeholder="Enter your password"/>
           <label for="password">Password</label>
@@ -24,22 +28,50 @@
     <Toast/>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   import { ref } from 'vue';
   import InputText from 'primevue/inputtext';
   import FloatLabel from 'primevue/floatlabel';
   import Button from 'primevue/button';
   import Toast from 'primevue/toast';
-  
+  import {useToast} from "primevue/usetoast";
+  import {useAuthStore} from "@/stores/authStore";
+  import {useRouter} from "vue-router";
+
+  const toast = useToast();
+  const authStore = useAuthStore();
+  const router = useRouter();
   // States for form inputs
   const username = ref('');
   const password = ref('');
   const confirmPassword = ref('');
   const coach = ref(false);
+  const name = ref('');
   
   // Placeholder function for form submission
   const submitForm = async () => {
-    // The sign-up logic will be implemented here by your backend team
+    if (password.value !== confirmPassword.value) {
+        toast.add({severity: 'error', summary: 'Sign Up', detail: 'Passwords do not match!', life: 3000});
+        return;
+    }
+     const rawResponse = await fetch(`/api/signup/${coach.value ? 'coach' : 'user'}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: name.value,
+            email: username.value,
+            password: password.value
+        })
+    });
+    if (rawResponse.ok) {
+        await authStore.pushToast('success', 'Signup', 'Signup Successful')
+        await router.push('/login')
+    } else {
+        const body = await rawResponse.json();
+        toast.add({severity: 'error', summary: 'Signup', detail: body.error, life: 3000});
+    }
   };
   </script>
   

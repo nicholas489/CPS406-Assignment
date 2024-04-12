@@ -22,10 +22,9 @@ onMounted(async () => {
         toast.add({ severity: e[0], summary: e[1], detail: e[2], life: 3000 });
     }
 })
-const logout = () => {
-  authStore.logout();
-  router.push('login');
-
+const logout = async () => {
+  await authStore.logout();
+  await router.push('/login');
 };
 
 
