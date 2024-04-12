@@ -10,7 +10,7 @@
                             v-for="(classInfo, index) in upcomingClasses"
                             :key="index"
                             :value="classInfo">
-                            {{ classInfo.name }} - {{ formatDate(classInfo.CreatedAt) }} - ${{ classInfo.cost }}
+                            {{ classInfo.name }} - {{ formatDate(`${classInfo.date}T${classInfo.time}`) }} - ${{ classInfo.cost }}
                         </option>
                     </select>
                 </div>
@@ -42,7 +42,6 @@ onMounted(async () => {
 });
 const formatDate = (string: string) => {
     const date = new Date(string);
-    date.setDate(date.getDate() + 7);
     return new Intl.DateTimeFormat('en-US', {
         year: 'numeric',
         month: 'long',

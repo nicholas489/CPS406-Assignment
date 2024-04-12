@@ -41,6 +41,7 @@ async function submitPayment() {
     });
     if (rawResponse.ok) {
         await authStore.pushToast('success', 'Payment Successful', 'Payment processed successfully')
+        await authStore.refreshOwed();
         await router.push('/user/dashboard')
     } else {
         const body = await rawResponse.json();
