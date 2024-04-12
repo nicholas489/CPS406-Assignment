@@ -39,6 +39,10 @@ const submitForm = async () => {
         toast.add({severity: 'error', summary: 'Login', detail: loginResult[1], life: 3000});
     };
 };
+
+const navigateToSignUp = () => {
+  router.push({ name: 'signup' }); 
+};
 </script>
 
 <template>
@@ -55,6 +59,7 @@ const submitForm = async () => {
             </FloatLabel>
             <input type="checkbox" v-model="coach"/> Coach?
             <Button label="Submit" type="submit"/>
+             <Button label="Sign Up" class="signup-button" @click="navigateToSignUp" />
         </form>
     </div>
     <Toast/>
