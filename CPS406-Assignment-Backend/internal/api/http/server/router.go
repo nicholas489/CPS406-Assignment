@@ -85,6 +85,9 @@ func Server(r chi.Router, db *gorm.DB) {
 		r.Get("/owed/{id}", func(writer http.ResponseWriter, request *http.Request) {
 			coach.GetOwed(writer, request, db)
 		})
+		r.Post("/{id}/pay", func(writer http.ResponseWriter, request *http.Request) {
+			finance.PayOwedCoach(writer, request, db)
+		})
 	})
 	// Route for the event
 	r.Route("/event", func(r chi.Router) {
