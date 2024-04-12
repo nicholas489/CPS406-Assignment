@@ -18,9 +18,9 @@ import {useToast} from "primevue/usetoast";
 const authStore = useAuthStore();
 const router = useRouter();
 const toast = useToast();
-const logout = () => {
-  authStore.logout();
-  router.push('login');
+const logout = async () => {
+  await authStore.logout();
+  await router.push('/login');
 };
 onMounted(() => {
     for (let e of authStore.toasts) {
