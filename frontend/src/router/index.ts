@@ -4,6 +4,7 @@ import DashboardView from '../views/UserDashboardView.vue'
 import PaymentView from '@/views/PaymentView.vue'
 import CoachDashboardView from "@/views/CoachDashboardView.vue";
 import NewClass from "@/components/organisms/newClass.vue";
+import Signup from '@/views/SignUp.vue'
 
 
 const router = createRouter({
@@ -33,7 +34,12 @@ const router = createRouter({
       path: '/create-class',
       name: 'create-class',
       component: NewClass
-    } 
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: Signup
+    }
    
   ]
 },
