@@ -2,6 +2,7 @@ package finance
 
 import (
 	"CPS406-Assignment-Backend/internal/util"
+	"CPS406-Assignment-Backend/pkg/coach"
 	"CPS406-Assignment-Backend/pkg/finance"
 	"CPS406-Assignment-Backend/pkg/user"
 	"encoding/json"
@@ -118,4 +119,34 @@ func PayBalanceUser(writer http.ResponseWriter, request *http.Request, db *gorm.
 	if err := json.NewEncoder(writer).Encode(user2); err != nil {
 		return
 	}
+}
+
+// PayOwedCoach updates the owed balance of the coach
+func PayOwedCoach(writer http.ResponseWriter, request *http.Request, db *gorm.DB) {
+	// Get the coach ID from the URL parameters
+	id := chi.URLParam(request, "id")
+	// Get the coach from the database
+	var coach2 coach.Coach
+	if err := db.First(&coach2, id).Error; err != nil {
+		util.SendJSONError(writer, "No such coach!", http.StatusNotFound)
+		return
+	}
+	// Decode the request body into a CoachPayment struct
+	var payment coach.CoachPayment
+	if err := json.NewDecoder(request.Body).Decode(&payment); err != nil {
+		util.SendJSONError(writer, "Failed to decode balance", http.StatusBadRequest)
+		return
+	}
+	// Update the coach's owed balance
+	coach2.Owed -= payment.Amount
+	if err := db.Save(&coach2).Error; err != nil {
+		util.SendJSONError(writer, "Failed to update owed balance", http.StatusInternalServerError)
+		return
+	}
+	// Respond with the updated coach
+	writer.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(writer).Encode(coach2); err != nil {
+		return
+	}
+
 }

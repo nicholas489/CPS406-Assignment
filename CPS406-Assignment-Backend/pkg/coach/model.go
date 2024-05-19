@@ -10,3 +10,8 @@ type Coach struct {
 	Password    string `json:"password"`
 	Owed        int    `json:"owed"`
 }
+
+type CoachPayment struct {
+	Id     int `json:"id"`
+	Amount int `json:"amount"`
+}
